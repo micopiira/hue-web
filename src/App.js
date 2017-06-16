@@ -17,7 +17,7 @@ class App extends Component {
         super(props);
         this.refreshLights = this.refreshLights.bind(this);
         this.setLightState = this.setLightState.bind(this);
-        this._setLightState = throttle(500, this._setLightState.bind(this));
+        this._setLightState = throttle(100, this._setLightState.bind(this));
     }
 
     setLightState(key, state) {
@@ -28,19 +28,19 @@ class App extends Component {
     }
 
     _setLightState(key, state) {
-        this.hue.setLightState(this.state.lights[key].id, state);
+        this.hue.setLightState(this.state.lights[key].id, state).catch(alert);
     }
 
     componentDidMount() {
         Hue.nupnpSearch().then(bridges => {
             const host = bridges[0].ipaddress;
             const user = localStorage.getItem('hue-user');
-            (user ? Promise.resolve(user) : this.hue.createUser(host)).then(user => {
-                this.hue = new HueApi(host, user);
-                this.refreshLights();
-                this.interval = setInterval(this.refreshLights, 10000);
-            });
-        });
+            return user ? {host, user} : this.hue.createUser(host).then(user => ({host, user}));
+        }).then(({host, user}) => {
+            this.hue = new HueApi(host, user);
+            this.refreshLights();
+            this.interval = setInterval(this.refreshLights, 10000);
+        }).catch(alert);
     }
 
     componentWillUnmount() {
@@ -48,7 +48,7 @@ class App extends Component {
     }
 
     refreshLights() {
-        this.hue.lights().then(({lights}) => this.setState({lights})).catch(console.error);
+        this.hue.lights().then(({lights}) => this.setState({lights})).catch(alert);
     }
 
     render() {
