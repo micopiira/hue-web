@@ -4,12 +4,15 @@ import Hue from 'philips-hue';
 import update from 'immutability-helper';
 import List from './List';
 import {throttle} from 'throttle-debounce';
+import 'font-awesome/css/font-awesome.css';
+import 'bootstrap/dist/css/bootstrap.css';
 
 class App extends Component {
 
     hue = new Hue();
 
     state = {
+        loading: false,
         lights: {}
     };
 
@@ -32,6 +35,7 @@ class App extends Component {
     }
 
     componentDidMount() {
+        this.setState({loading: true});
         this.hue.getBridges()
             .then(bridges => {
                 const bridge = bridges[0];
@@ -52,13 +56,20 @@ class App extends Component {
     }
 
     refreshLights() {
-        this.hue.getLights().then(lights => this.setState({lights})).catch(console.error);
+        this.hue.getLights()
+            .then(lights => this.setState({lights}))
+            .then(() => this.setState({loading: false}))
+            .catch(console.error);
     }
 
     render() {
         return (
-            <div className="App">
-                <List lights={this.state.lights} setLightState={this.setLightState}/>
+            <div className="App container">
+                {this.state.loading ?
+                    <div>
+                        <i className="fa fa-spinner fa-pulse fa-3x fa-fw"/>
+                        <span className="sr-only">Loading...</span>
+                    </div> : <List lights={this.state.lights} setLightState={this.setLightState}/>}
             </div>
         );
     }

@@ -2,7 +2,10 @@
   "name": "hue-web",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://micopiira.github.io/hue-web",
   "dependencies": {
+    "bootstrap": "next",
+    "font-awesome": "^4.7.0",
     "hex-rgb": "^1.0.0",
     "immutability-helper": "^2.2.2",
     "philips-hue": "^1.2.0",
@@ -12,12 +15,15 @@
     "throttle-debounce": "^1.0.1"
   },
   "devDependencies": {
+    "gh-pages": "^1.0.0",
     "react-scripts": "1.0.7"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   }
 }
