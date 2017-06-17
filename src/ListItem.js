@@ -2,6 +2,7 @@ import React from 'react';
 import Hue from 'node-hue-api';
 import hexRgb from 'hex-rgb';
 import PropTypes from 'prop-types';
+import propTypes from './propTypes';
 
 const lightState = Hue.lightState;
 
@@ -34,7 +35,7 @@ const ListItem = ({light, setLightState}) =>
     </li>;
 
 ListItem.propTypes = {
-    light: PropTypes.object,
+    light: propTypes.light,
     setLightState: PropTypes.func,
 };
 
