@@ -1,16 +1,16 @@
 import React, {Component} from 'react';
 import './App.css';
-import Hue, {HueApi} from 'node-hue-api';
+import Hue from 'philips-hue';
 import update from 'immutability-helper';
 import List from './List';
 import {throttle} from 'throttle-debounce';
 
 class App extends Component {
 
-    hue = new HueApi();
+    hue = new Hue();
 
     state = {
-        lights: []
+        lights: {}
     };
 
     constructor(props) {
@@ -27,20 +27,24 @@ class App extends Component {
         );
     }
 
-    _setLightState(key, state) {
-        this.hue.setLightState(this.state.lights[key].id, state).catch(alert);
+    _setLightState(id, state) {
+        this.hue.light(id).setState(state).catch(console.error);
     }
 
     componentDidMount() {
-        Hue.nupnpSearch().then(bridges => {
-            const host = bridges[0].ipaddress;
-            const user = localStorage.getItem('hue-user');
-            return user ? {host, user} : this.hue.createUser(host).then(user => ({host, user}));
-        }).then(({host, user}) => {
-            this.hue = new HueApi(host, user);
-            this.refreshLights();
-            this.interval = setInterval(this.refreshLights, 10000);
-        }).catch(alert);
+        this.hue.getBridges()
+            .then(bridges => {
+                const bridge = bridges[0];
+                const username = localStorage.getItem('hue-user');
+                return username ? {bridge, username} : this.hue.auth(bridge).then(username => ({bridge, username}));
+            })
+            .then(({bridge, username}) => {
+                this.hue.bridge = bridge;
+                this.hue.username = username;
+                this.refreshLights();
+                this.interval = setInterval(this.refreshLights, 10000);
+            })
+            .catch(console.error);
     }
 
     componentWillUnmount() {
@@ -48,7 +52,7 @@ class App extends Component {
     }
 
     refreshLights() {
-        this.hue.lights().then(({lights}) => this.setState({lights})).catch(alert);
+        this.hue.getLights().then(lights => this.setState({lights})).catch(console.error);
     }
 
     render() {

@@ -5,13 +5,13 @@ import propTypes from './propTypes';
 
 const List = ({lights, setLightState}) =>
     <ul>
-        {lights.map((light, index) => {
-            return <ListItem key={light.id} light={light} setLightState={(state) => setLightState(index, state)}/>;
+        {Object.keys(lights).map(id => {
+            return <ListItem key={id} light={lights[id]} setLightState={(state) => setLightState(id, state)}/>;
         })}
     </ul>;
 
 List.propTypes = {
-    lights: PropTypes.arrayOf(propTypes.light),
+    lights: PropTypes.objectOf(propTypes.light),
     setLightState: PropTypes.func
 };
 

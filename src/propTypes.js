@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 
 export default {
     light: PropTypes.shape({
-        id: PropTypes.string,
         manufacturername: PropTypes.string,
         modelid: PropTypes.string,
         name: PropTypes.string,

@@ -1,13 +1,9 @@
 import React from 'react';
-import Hue from 'node-hue-api';
-import hexRgb from 'hex-rgb';
 import PropTypes from 'prop-types';
 import propTypes from './propTypes';
 
-const lightState = Hue.lightState;
-
 const ListItem = ({light, setLightState}) =>
-    <li key={light.id}>
+    <li>
         <input type="checkbox"
                disabled={!light.state.reachable}
                checked={light.state.on}
@@ -22,7 +18,7 @@ const ListItem = ({light, setLightState}) =>
 
         <input type="color"
                disabled={light.state.effect !== 'none' || !light.state.reachable}
-               onChange={(event) => setLightState(lightState.create().rgb(hexRgb(event.target.value)))}/>
+               onChange={(event) => alert(event.target.value)}/>
 
         <input type="range"
                disabled={!light.state.on || !light.state.reachable}
