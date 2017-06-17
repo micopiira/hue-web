@@ -1,5 +1,7 @@
 import PropTypes from 'prop-types';
 
+export const effects = ['none', 'colorloop'];
+
 export default {
     light: PropTypes.shape({
         manufacturername: PropTypes.string,
@@ -11,7 +13,7 @@ export default {
             bri: PropTypes.number,
             colormode: PropTypes.oneOf(['hs', 'xy', 'ct']),
             ct: PropTypes.number,
-            effect: PropTypes.oneOf(['none', 'colorloop']),
+            effect: PropTypes.oneOf(effects),
             hue: PropTypes.number,
             on: PropTypes.bool,
             reachable: PropTypes.bool,

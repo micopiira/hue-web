@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import propTypes from './propTypes';
+import propTypes, {effects} from './propTypes';
 
 const ListItem = ({light, setLightState}) =>
     <li className="list-unstyled">
@@ -20,8 +20,9 @@ const ListItem = ({light, setLightState}) =>
                     <select disabled={!light.state.on || !light.state.reachable}
                             onChange={(event) => setLightState({effect: event.target.value})}
                             value={light.state.effect}>
-                        <option value="none">none</option>
-                        <option value="colorloop">colorloop</option>
+                        {effects.map(effect =>
+                            <option key={effect} value={effect}>{effect}</option>
+                        )}
                     </select>
 
                     <input type="color"
