@@ -6,10 +6,13 @@ const ListItem = ({light, setLightState}) =>
     <li className="list-group-item">
         <div className="row">
             <div className="col">
-                <input type="checkbox"
-                       disabled={!light.state.reachable}
-                       checked={light.state.on}
-                       onChange={(event) => setLightState({on: event.target.checked})}/>
+                <button type="button"
+                        disabled={!light.state.reachable}
+                        className={'btn btn-primary' + (light.state.on ? ' active' : '')}
+                        aria-pressed={light.state.on}
+                        onClick={() => setLightState({on: !light.state.on})}>
+                    <i className="fa fa-power-off" aria-hidden="true"/>
+                </button>
             </div>
             <div className="col">
                 <div className="row">
