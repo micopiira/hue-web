@@ -20,7 +20,7 @@ class App extends Component {
         super(props);
         this.refreshLights = this.refreshLights.bind(this);
         this.setLightState = this.setLightState.bind(this);
-        this._setLightState = throttle(100, this._setLightState.bind(this));
+        this._setLightState = throttle(100, this._setLightState);
     }
 
     setLightState(key, state) {
@@ -31,29 +31,35 @@ class App extends Component {
     }
 
     _setLightState(id, state) {
-        this.hue.light(id).setState(state).catch(console.error);
+        this.runWithLoader(this.hue.light(id).setState(state).catch(console.error));
+    }
+
+    runWithLoader(promise) {
+        this.setState({loading: true});
+        promise.then(() => this.setState({loading: false}));
     }
 
     componentDidMount() {
-        this.setState({loading: true});
-        this.hue.getBridges()
-            .then(bridges => {
-                const bridge = bridges[0];
-                const username = localStorage.getItem('hue-user');
-                return username ? {bridge, username} : new Promise((resolve, reject) => {
-                    console.log("press link button pls");
-                    setTimeout(() => {
-                        this.hue.auth(bridge).then(username => resolve({bridge, username})).catch(reject);
-                    }, 10000);
-                });
-            })
-            .then(({bridge, username}) => {
-                this.hue.bridge = bridge;
-                this.hue.username = username;
-                this.refreshLights();
-                this.interval = setInterval(this.refreshLights, 10000);
-            })
-            .catch(alert);
+        this.runWithLoader(
+            this.hue.getBridges()
+                .then(bridges => {
+                    const bridge = bridges[0];
+                    const username = localStorage.getItem('hue-user');
+                    return username ? {bridge, username} : new Promise((resolve, reject) => {
+                        console.log("press link button pls");
+                        setTimeout(() => {
+                            this.hue.auth(bridge).then(username => resolve({bridge, username})).catch(reject);
+                        }, 10000);
+                    });
+                })
+                .then(({bridge, username}) => {
+                    this.hue.bridge = bridge;
+                    this.hue.username = username;
+                    this.refreshLights();
+                    this.interval = setInterval(this.refreshLights, 10000);
+                })
+                .catch(console.error)
+        );
     }
 
     componentWillUnmount() {
@@ -61,20 +67,23 @@ class App extends Component {
     }
 
     refreshLights() {
-        this.hue.getLights()
-            .then(lights => this.setState({lights}))
-            .then(() => this.setState({loading: false}))
-            .catch(console.error);
+        this.runWithLoader(
+            this.hue.getLights()
+                .then(lights => this.setState({lights}))
+                .catch(console.error)
+        );
     }
 
     render() {
         return (
             <div className="App container">
-                {this.state.loading ?
-                    <div>
-                        <i className="fa fa-spinner fa-pulse fa-3x fa-fw"/>
+                {this.state.loading &&
+                    <div className="fixed-top text-right">
+                        <i className="fa fa-circle-o-notch fa-spin fa-3x fa-fw text-info m-2"/>
                         <span className="sr-only">Loading...</span>
-                    </div> : <List lights={this.state.lights} setLightState={this.setLightState}/>}
+                    </div>
+                }
+                <List lights={this.state.lights} setLightState={this.setLightState}/>
             </div>
         );
     }
