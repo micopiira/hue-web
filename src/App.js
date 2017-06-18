@@ -40,7 +40,12 @@ class App extends Component {
             .then(bridges => {
                 const bridge = bridges[0];
                 const username = localStorage.getItem('hue-user');
-                return username ? {bridge, username} : this.hue.auth(bridge).then(username => ({bridge, username}));
+                return username ? {bridge, username} : new Promise((resolve, reject) => {
+                    console.log("press link button pls");
+                    setTimeout(() => {
+                        this.hue.auth(bridge).then(username => resolve({bridge, username})).catch(reject);
+                    }, 10000);
+                });
             })
             .then(({bridge, username}) => {
                 this.hue.bridge = bridge;
@@ -48,7 +53,7 @@ class App extends Component {
                 this.refreshLights();
                 this.interval = setInterval(this.refreshLights, 10000);
             })
-            .catch(console.error);
+            .catch(alert);
     }
 
     componentWillUnmount() {
