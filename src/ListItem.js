@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import propTypes, {effects} from './propTypes';
 
 const ListItem = ({light, setLightState}) =>
-    <li className="list-unstyled">
+    <li className="list-group-item">
         <div className="row">
             <div className="col">
                 <input type="checkbox"
