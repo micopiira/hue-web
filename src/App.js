@@ -79,7 +79,7 @@ class App extends Component {
             <div className="App container">
                 {this.state.loading &&
                     <div className="fixed-top text-right">
-                        <i className="fa fa-circle-o-notch fa-spin fa-3x fa-fw text-info m-2"/>
+                        <i className="fa fa-circle-o-notch fa-spin fa-fw text-info m-2"/>
                         <span className="sr-only">Loading...</span>
                     </div>
                 }
