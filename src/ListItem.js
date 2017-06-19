@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import propTypes, {effects} from './propTypes';
-import { PhotoshopPicker } from 'react-color';
+import JsColorPicker from './JsColorPicker';
 
 const ListItem = ({light, setLightState}) =>
     <li className="list-group-item">
@@ -28,9 +28,9 @@ const ListItem = ({light, setLightState}) =>
                             <option key={effect} value={effect}>{effect}</option>
                         )}
                     </select>
-                    <PhotoshopPicker
-                        color={{h: parseInt(light.state.hue / (65535 / 360), 10), s: light.state.sat / 254, l: .5}}
-                        onChangeComplete={({hsv}) => {console.log(hsv);setLightState({hue: parseInt(hsv.h * (65535 / 360), 10), sat: parseInt(hsv.s * 254, 10)})}}/>
+                    <JsColorPicker
+                        onChange={({xy}) => setLightState({xy: [xy.x, xy.y]})}
+                        color={{h: parseInt(light.state.hue / (65535 / 360), 10), s: light.state.sat / 254, l: 0.5}}/>
 
                     <input type="range"
                            disabled={!light.state.on || !light.state.reachable}
