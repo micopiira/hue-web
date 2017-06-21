@@ -18,7 +18,7 @@ class App extends Component {
 
     handleError(error) {
         console.error(error);
-        this.setState({error});
+        this.setState({error, loading: false});
     }
 
     constructor(props) {
@@ -27,6 +27,7 @@ class App extends Component {
         this.setLightState = this.setLightState.bind(this);
         this.handleError = this.handleError.bind(this);
         this._setLightState = throttle(100, this._setLightState);
+        this.authenticate = this.authenticate.bind(this);
     }
 
     setLightState(key, state) {
@@ -45,25 +46,30 @@ class App extends Component {
         promise.then(() => this.setState({loading: false}));
     }
 
+    authenticate(bridge) {
+        return new Promise((resolve, reject) => {
+            const username = localStorage.getItem('hue-user');
+            if (username) {
+                resolve(username);
+            } else {
+                console.log("press link button pls");
+                setTimeout(() => {
+                    this.hue.auth(bridge).then(username => {resolve(username)}).catch(reject);
+                }, 10000);
+            }
+        }).then(username => {
+            this.hue.bridge = bridge;
+            this.hue.username = username;
+            this.refreshLights();
+            this.interval = setInterval(this.refreshLights, 10000);
+        });
+    }
+
     componentDidMount() {
         this.runWithLoader(
             this.hue.getBridges()
-                .then(bridges => {
-                    const bridge = bridges[0];
-                    const username = localStorage.getItem('hue-user');
-                    return username ? {bridge, username} : new Promise((resolve, reject) => {
-                        console.log("press link button pls");
-                        setTimeout(() => {
-                            this.hue.auth(bridge).then(username => resolve({bridge, username})).catch(reject);
-                        }, 10000);
-                    });
-                })
-                .then(({bridge, username}) => {
-                    this.hue.bridge = bridge;
-                    this.hue.username = username;
-                    this.refreshLights();
-                    this.interval = setInterval(this.refreshLights, 10000);
-                })
+                .then(bridges => bridges[0])
+                .then(this.authenticate)
                 .catch(this.handleError)
         );
     }
@@ -83,6 +89,9 @@ class App extends Component {
     render() {
         return (
             <div className="App container">
+                <input ref={(input) => this.input = input} type="text" placeholder="Bridge IP Address"/>
+                <button onClick={() => this.runWithLoader(this.authenticate(this.input.value).catch(this.handleError))}>auth</button>
+
                 {this.state.error &&
                     <div className="alert alert-danger mt-4" role="alert">
                         <strong>Oh snap!</strong> {this.state.error.message}
