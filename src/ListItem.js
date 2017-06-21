@@ -29,7 +29,7 @@ const ListItem = ({light, setLightState}) =>
                         )}
                     </select>
                     <JsColorPicker
-                        onChange={({hsv}) => setLightState({hue: hsv.h, sat: hsv.s})}
+                        onChange={({xy}) => setLightState({xy})}
                         color={{h: parseInt(light.state.hue / (65535 / 360), 10), s: light.state.sat / 254, l: 0.5}}/>
 
                     <input type="range"
