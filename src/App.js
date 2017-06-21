@@ -48,13 +48,16 @@ class App extends Component {
 
     authenticate(bridge) {
         return new Promise((resolve, reject) => {
-            const username = localStorage.getItem('hue-user');
+            const username = localStorage.getItem(bridge);
             if (username) {
                 resolve(username);
             } else {
                 console.log("press link button pls");
                 setTimeout(() => {
-                    this.hue.auth(bridge).then(username => {resolve(username)}).catch(reject);
+                    this.hue.auth(bridge).then(username => {
+                        localStorage.setItem(bridge, username);
+                        resolve(username);
+                    }).catch(reject);
                 }, 10000);
             }
         }).then(username => {
