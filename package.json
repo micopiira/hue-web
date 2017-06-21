@@ -8,6 +8,7 @@
     "font-awesome": "^4.7.0",
     "hex-rgb": "^1.0.0",
     "immutability-helper": "^2.2.2",
+    "iro.js": "https://github.com/jaames/iro.js",
     "philips-hue": "^1.2.0",
     "prop-types": "latest",
     "react": "^15.6.1",
