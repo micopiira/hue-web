@@ -16,10 +16,16 @@ class App extends Component {
         lights: {}
     };
 
+    handleError(error) {
+        console.error(error);
+        this.setState({error});
+    }
+
     constructor(props) {
         super(props);
         this.refreshLights = this.refreshLights.bind(this);
         this.setLightState = this.setLightState.bind(this);
+        this.handleError = this.handleError.bind(this);
         this._setLightState = throttle(100, this._setLightState);
     }
 
@@ -31,7 +37,7 @@ class App extends Component {
     }
 
     _setLightState(id, state) {
-        this.runWithLoader(this.hue.light(id).setState(state).catch(console.error));
+        this.runWithLoader(this.hue.light(id).setState(state).catch(this.handleError));
     }
 
     runWithLoader(promise) {
@@ -58,7 +64,7 @@ class App extends Component {
                     this.refreshLights();
                     this.interval = setInterval(this.refreshLights, 10000);
                 })
-                .catch(console.error)
+                .catch(this.handleError)
         );
     }
 
@@ -70,13 +76,18 @@ class App extends Component {
         this.runWithLoader(
             this.hue.getLights()
                 .then(lights => this.setState({lights}))
-                .catch(console.error)
+                .catch(this.handleError)
         );
     }
 
     render() {
         return (
             <div className="App container">
+                {this.state.error &&
+                    <div className="alert alert-danger mt-4" role="alert">
+                        <strong>Oh snap!</strong> {this.state.error.message}
+                    </div>
+                }
                 {this.state.loading &&
                     <div className="fixed-top text-right">
                         <i className="fa fa-circle-o-notch fa-spin fa-fw text-info m-2"/>
