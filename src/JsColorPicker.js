@@ -25,7 +25,8 @@ class JsColorPicker extends React.Component {
         const y = event.nativeEvent.offsetY;
         const data = this.ctx.getImageData(x, y, 1, 1).data;
         this.setState({r: data[0], g: data[1], b: data[2]}, () => {
-            this.props.onChange({rgb: this.state, xy: rgb_to_cie(this.state.r, this.state.g, this.state.b)});
+            const cie = rgb_to_cie(this.state.r, this.state.g, this.state.b);
+            this.props.onChange({rgb: this.state, xy: rgb_to_cie(this.state.r, this.state.g, this.state.b).map(parseFloat)});
         });
     }
     componentDidMount() {
