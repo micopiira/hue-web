@@ -1,7 +1,7 @@
 import React from 'react';
 import ListItem from './ListItem';
 import PropTypes from 'prop-types';
-import propTypes from './propTypes';
+import propTypes from '../propTypes';
 
 const List = ({lights, setLightState}) =>
     <ul className="list-group">

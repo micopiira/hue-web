@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import propTypes, {effects} from './propTypes';
+import propTypes, {effects} from '../propTypes';
 import JsColorPicker from './JsColorPicker';
 
 const ListItem = ({light, setLightState}) =>

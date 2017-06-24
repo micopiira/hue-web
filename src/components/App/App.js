@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import './App.css';
 import Hue from 'philips-hue';
 import update from 'immutability-helper';
-import List from './List';
+import List from './components/List';
 import {throttle} from 'throttle-debounce';
 import 'font-awesome/css/font-awesome.css';
 import 'bootstrap/dist/css/bootstrap.css';
