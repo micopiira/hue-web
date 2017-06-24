@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import propTypes, {effects} from '../propTypes';
-import JsColorPicker from './JsColorPicker';
+import ColorPicker from './ColorPicker';
 
 const ListItem = ({light, setLightState}) =>
     <li className="list-group-item">
@@ -28,7 +28,7 @@ const ListItem = ({light, setLightState}) =>
                             <option key={effect} value={effect}>{effect}</option>
                         )}
                     </select>
-                    <JsColorPicker
+                    <ColorPicker
                         onChange={({xy}) => setLightState({xy})}
                         color={{h: parseInt(light.state.hue / (65535 / 360), 10), s: light.state.sat / 254, l: 0.5}}/>
 
