@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { rgb_to_cie } from './cie_rgb_converter';
 
-class JsColorPicker extends React.Component {
+class ColorPicker extends React.Component {
     static propTypes = {
         onChange: PropTypes.func.isRequired,
         color: PropTypes.shape({
@@ -74,4 +74,4 @@ class JsColorPicker extends React.Component {
     }
 }
 
-export default JsColorPicker;
+export default ColorPicker;
