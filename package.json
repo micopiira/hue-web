@@ -5,7 +5,6 @@
   "homepage": "https://micopiira.github.io/hue-web",
   "dependencies": {
     "bootstrap": "next",
-    "cie-rgb-converter": "https://github.com/micopiira/cie-rgb-converter",
     "font-awesome": "^4.7.0",
     "immutability-helper": "^2.2.2",
     "philips-hue": "^1.2.0",

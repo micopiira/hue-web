@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import propTypes, {effects} from '../propTypes';
-import ColorPicker from './ColorPicker';
+import ColorPicker from './ColorPicker/ColorPicker';
 
 const ListItem = ({light, setLightState}) =>
     <li className="list-group-item">

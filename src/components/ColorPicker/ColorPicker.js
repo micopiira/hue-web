@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { rgb_to_cie } from 'cie-rgb-converter';
+import { rgb_to_cie } from './cie_rgb_converter';
 
 class JsColorPicker extends React.Component {
     static propTypes = {
@@ -19,40 +19,28 @@ class JsColorPicker extends React.Component {
     constructor() {
         super();
         this.handleClick = this.handleClick.bind(this);
+        this.drawColorWheel = this.drawColorWheel.bind(this);
     }
     handleClick(event) {
-        const x = event.nativeEvent.offsetX;
-        const y = event.nativeEvent.offsetY;
-        const data = this.ctx.getImageData(x, y, 1, 1).data;
+        const data = this.ctx.getImageData(event.nativeEvent.offsetX, event.nativeEvent.offsetY, 1, 1).data;
         this.setState({r: data[0], g: data[1], b: data[2]}, () => {
-            const cie = rgb_to_cie(this.state.r, this.state.g, this.state.b);
             this.props.onChange({rgb: this.state, xy: rgb_to_cie(this.state.r, this.state.g, this.state.b).map(parseFloat)});
         });
     }
-    componentDidMount() {
-        this.setState(this.props.color);
+    drawColorWheel() {
         const canvas = this.refs.canvas;
         this.ctx = canvas.getContext('2d');
 
-        // source: https://github.com/ariya/phantomjs/blob/master/examples/colorwheel.js
-        var width = 100,
-            height = 100,
-            cx = width / 2,
-            cy = height / 2,
-            radius = width  / 2.3,
-            imageData,
-            pixels,
-            hue, sat, value,
-            i = 0, x, y, rx, ry, d,
-            f, g, p, u, v, w, rgb;
+        const cx = canvas.width / 2;
+        const cy = canvas.height / 2;
+        const radius = canvas.width / 2.3;
+        const imageData = this.ctx.createImageData(canvas.width, canvas.height);
+        const pixels = imageData.data;
 
-        canvas.width = width;
-        canvas.height = height;
-        imageData = this.ctx.createImageData(width, height);
-        pixels = imageData.data;
+        let hue, sat, i = 0, x, y, rx, ry, d, f, g, u, v, w; // Reuse variables for performance?
 
-        for (y = 0; y < height; y = y + 1) {
-            for (x = 0; x < width; x = x + 1, i = i + 4) {
+        for (y = 0; y < canvas.height; y = y + 1) {
+            for (x = 0; x < canvas.width; x = x + 1, i = i + 4) {
                 rx = x - cx;
                 ry = y - cy;
                 d = rx * rx + ry * ry;
@@ -72,7 +60,10 @@ class JsColorPicker extends React.Component {
             }
         }
         this.ctx.putImageData(imageData, 0, 0);
-
+    }
+    componentDidMount() {
+        this.setState(this.props.color);
+        this.drawColorWheel();
     }
     render() {
         return (
