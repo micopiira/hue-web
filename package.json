@@ -5,6 +5,7 @@
   "homepage": "https://micopiira.github.io/hue-web",
   "dependencies": {
     "bootstrap": "next",
+    "color-temperature": "^0.2.7",
     "font-awesome": "^4.7.0",
     "immutability-helper": "^2.2.2",
     "philips-hue": "^1.2.0",
