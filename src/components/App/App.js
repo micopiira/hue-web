@@ -97,6 +97,9 @@ class App extends Component {
 
                 {this.state.error &&
                     <div className="alert alert-danger mt-4" role="alert">
+                        <button type="button" className="close" data-dismiss="alert" aria-label="Close" onClick={() => this.setState({error: null})}>
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                         <strong>Oh snap!</strong> {this.state.error.message}
                     </div>
                 }
