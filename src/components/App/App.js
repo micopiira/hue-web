@@ -50,15 +50,18 @@ class App extends Component {
         return new Promise((resolve, reject) => {
             const username = localStorage.getItem(bridge);
             if (username) {
+                console.log(`Found username for bridge ${bridge}`);
                 resolve(username);
             } else {
-                console.log("press link button pls");
-                setTimeout(() => {
+                console.log(`No username found for bridge ${bridge}, starting linking`);
+                if (window.confirm(`Press link button on bridge ${bridge} and then click OK`)) {
                     this.hue.auth(bridge).then(username => {
                         localStorage.setItem(bridge, username);
                         resolve(username);
                     }).catch(reject);
-                }, 10000);
+                } else {
+                    reject("User cancelled linking");
+                }
             }
         }).then(username => {
             this.hue.bridge = bridge;
@@ -69,9 +72,17 @@ class App extends Component {
     }
 
     componentDidMount() {
+        console.log("Searching for bridges...");
         this.runWithLoader(
             this.hue.getBridges()
-                .then(bridges => bridges[0])
+                .then(bridges => {
+                    const bridge = bridges[0];
+                    if (bridge) {
+                        console.log(`Found bridge at ${bridge}`);
+                        return bridges[0];
+                    }
+                    throw new Error("No bridges found. Try manually typing the bridge IP address.");
+                })
                 .then(this.authenticate)
                 .catch(this.handleError)
         );
@@ -82,9 +93,13 @@ class App extends Component {
     }
 
     refreshLights() {
+        console.log("Searching for lights...");
         this.runWithLoader(
             this.hue.getLights()
-                .then(lights => this.setState({lights}))
+                .then(lights => {
+                    console.log(`Found ${Object.keys(lights).length} lights`);
+                    this.setState({lights})
+                })
                 .catch(this.handleError)
         );
     }
@@ -92,22 +107,27 @@ class App extends Component {
     render() {
         return (
             <div className="App container">
-                <input ref={(input) => this.input = input} type="text" placeholder="Bridge IP Address"/>
-                <button onClick={() => this.runWithLoader(this.authenticate(this.input.value).catch(this.handleError))}>auth</button>
+                <input className="form-control" ref={(input) => this.input = input} type="text"
+                       placeholder="Bridge IP Address"/>
+                <button className="btn btn-primary"
+                        onClick={() => this.runWithLoader(this.authenticate(this.input.value).catch(this.handleError))}>
+                    Link
+                </button>
 
                 {this.state.error &&
-                    <div className="alert alert-danger mt-4" role="alert">
-                        <button type="button" className="close" data-dismiss="alert" aria-label="Close" onClick={() => this.setState({error: null})}>
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                        <strong>Oh snap!</strong> {this.state.error.message}
-                    </div>
+                <div className="alert alert-danger mt-4" role="alert">
+                    <button type="button" className="close" data-dismiss="alert" aria-label="Close"
+                            onClick={() => this.setState({error: null})}>
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <strong>Oh snap!</strong> {this.state.error.name + ' ' + this.state.error.message}
+                </div>
                 }
                 {this.state.loading &&
-                    <div className="fixed-top text-right">
-                        <i className="fa fa-circle-o-notch fa-spin fa-fw text-info m-2"/>
-                        <span className="sr-only">Loading...</span>
-                    </div>
+                <div className="fixed-top text-right">
+                    <i className="fa fa-circle-o-notch fa-spin fa-fw text-info m-2"/>
+                    <span className="sr-only">Loading...</span>
+                </div>
                 }
                 <List lights={this.state.lights} setLightState={this.setLightState}/>
             </div>
