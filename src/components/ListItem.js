@@ -5,7 +5,7 @@ import ColorPicker from './ColorPicker/ColorPicker';
 import CtColorPicker from "./ColorPicker/CtColorPicker";
 
 const ListItem = ({light, setLightState}) =>
-    <li className="list-group-item">
+    <div className="card">
         <div className="row">
             <div className="col">
                 <button type="button"
@@ -51,7 +51,7 @@ const ListItem = ({light, setLightState}) =>
                 </div>
             </div>
         </div>
-    </li>;
+    </div>;
 
 ListItem.propTypes = {
     light: propTypes.light,

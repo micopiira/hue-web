@@ -4,11 +4,11 @@ import PropTypes from 'prop-types';
 import propTypes from '../propTypes';
 
 const List = ({lights, setLightState}) =>
-    <ul className="list-group">
+    <div className="card-columns">
         {Object.keys(lights).map(id => {
             return <ListItem key={id} light={lights[id]} setLightState={(state) => setLightState(id, state)}/>;
         })}
-    </ul>;
+    </div>;
 
 List.propTypes = {
     lights: PropTypes.objectOf(propTypes.light),
