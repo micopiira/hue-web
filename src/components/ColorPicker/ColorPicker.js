@@ -1,15 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { rgb_to_cie } from './cie_rgb_converter';
+import propTypes from '../../propTypes';
 
 class ColorPicker extends React.Component {
     static propTypes = {
         onChange: PropTypes.func.isRequired,
-        color: PropTypes.shape({
-            r: PropTypes.number,
-            g: PropTypes.number,
-            b: PropTypes.number
-        })
+        color: propTypes.rgb
     };
     state = {
         r: 0,

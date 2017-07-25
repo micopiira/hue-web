@@ -107,12 +107,15 @@ class App extends Component {
     render() {
         return (
             <div className="App container">
-                    <input className="form-control" ref={(input) => this.input = input} type="text" placeholder="Bridge IP Address" value={this.hue.bridge || ''}/>
-                    <button className="btn btn-primary"
-                            onClick={() => this.runWithLoader(this.authenticate(this.input.value).catch(this.handleError))}>
-                        Link
-                    </button>
-
+                <div className="row my-3 input-group">
+                    <input className="form-control col" ref={(input) => this.input = input} type="text" placeholder="Bridge IP Address" value={this.hue.bridge || ''}/>
+                    <span className="input-group-btn">
+                        <button className="btn btn-primary col"
+                                onClick={() => this.runWithLoader(this.authenticate(this.input.value).catch(this.handleError))}>
+                            Link
+                        </button>
+                    </span>
+                </div>
                 {this.state.error &&
                 <div className="alert alert-danger mt-4" role="alert">
                     <button type="button" className="close" data-dismiss="alert" aria-label="Close"

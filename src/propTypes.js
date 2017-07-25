@@ -2,7 +2,20 @@ import PropTypes from 'prop-types';
 
 export const effects = ['none', 'colorloop'];
 
+const octet = (props, propName, componentName) => {
+    const value = props[propName];
+    if (!(value >= 0 && value <= 255)) {
+        return new Error('Invalid octet');
+    }
+};
+
 export default {
+    octet,
+    rgb: PropTypes.shape({
+        r: octet,
+        g: octet,
+        b: octet
+    }),
     light: PropTypes.shape({
         manufacturername: PropTypes.string,
         modelid: PropTypes.string,
