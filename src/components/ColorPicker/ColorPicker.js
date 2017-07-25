@@ -33,7 +33,7 @@ class ColorPicker extends React.Component {
 
         const cx = canvas.width / 2;
         const cy = canvas.height / 2;
-        const radius = canvas.width / 2.3;
+        const radius = canvas.height / 2.3;
         const imageData = this.ctx.createImageData(canvas.width, canvas.height);
         const pixels = imageData.data;
 
@@ -66,11 +66,7 @@ class ColorPicker extends React.Component {
         this.drawColorWheel();
     }
     render() {
-        return (
-            <div>
-                <canvas ref="canvas" width={300} height={300} onClick={this.handleClick}/>
-            </div>
-        );
+        return <div><canvas className="img-fluid" height={300} ref="canvas" onClick={this.handleClick}/></div>;
     }
 }
 

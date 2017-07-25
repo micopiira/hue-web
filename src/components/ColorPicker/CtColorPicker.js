@@ -62,11 +62,7 @@ class CtColorPicker extends React.Component {
         this.drawColorWheel();
     }
     render() {
-        return (
-            <div>
-                <canvas ref="canvas" width={300} height={50} onClick={this.handleClick}/>
-            </div>
-        );
+        return <div><canvas className="img-fluid" height={50} ref="canvas" onClick={this.handleClick}/></div>;
     }
 }
 
