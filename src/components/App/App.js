@@ -1,15 +1,17 @@
 import React, {Component} from 'react';
 import './App.css';
-import Hue from 'philips-hue';
+import Hue, {HueApi} from 'node-hue-api';
 import update from 'immutability-helper';
 import List from '../List';
 import {throttle} from 'throttle-debounce';
 import 'font-awesome/css/font-awesome.css';
 import 'bootstrap/dist/css/bootstrap.css';
 
+const arrayToObject = (arr, keyField) => Object.assign({}, ...arr.map(item => ({[item[keyField]]: item})));
+
 class App extends Component {
 
-    hue = new Hue();
+    api = new HueApi();
 
     state = {
         loading: false,
@@ -31,6 +33,7 @@ class App extends Component {
     }
 
     setLightState(key, state) {
+        console.log(`Setting light #${key} state to ${JSON.stringify(state)}`);
         this.setState(prevState =>
             update(prevState, {lights: {[key]: {state: {$merge: state}}}}),
             () => this._setLightState(key, state)
@@ -38,7 +41,7 @@ class App extends Component {
     }
 
     _setLightState(id, state) {
-        this.runWithLoader(this.hue.light(id).setState(state).catch(this.handleError));
+        this.runWithLoader(this.api.setLightState(id, state).catch(this.handleError));
     }
 
     runWithLoader(promise) {
@@ -55,7 +58,7 @@ class App extends Component {
             } else {
                 console.log(`No username found for bridge ${bridge}, starting linking`);
                 if (window.confirm(`Press link button on bridge ${bridge} and then click OK`)) {
-                    this.hue.auth(bridge).then(username => {
+                    this.api.createUser(bridge).then(username => {
                         localStorage.setItem(bridge, username);
                         resolve(username);
                     }).catch(reject);
@@ -64,8 +67,7 @@ class App extends Component {
                 }
             }
         }).then(username => {
-            this.hue.bridge = bridge;
-            this.hue.username = username;
+            this.api = new HueApi(bridge, username);
             this.refreshLights();
             this.interval = setInterval(this.refreshLights, 10000);
         });
@@ -74,12 +76,12 @@ class App extends Component {
     componentDidMount() {
         console.log("Searching for bridges...");
         this.runWithLoader(
-            this.hue.getBridges()
+            Hue.nupnpSearch()
                 .then(bridges => {
-                    const bridge = bridges[0];
+                    const bridge = bridges[0].ipaddress;
                     if (bridge) {
                         console.log(`Found bridge at ${bridge}`);
-                        return bridges[0];
+                        return bridge;
                     }
                     throw new Error("No bridges found. Try manually typing the bridge IP address.");
                 })
@@ -95,10 +97,10 @@ class App extends Component {
     refreshLights() {
         console.log("Searching for lights...");
         this.runWithLoader(
-            this.hue.getLights()
-                .then(lights => {
-                    console.log(`Found ${Object.keys(lights).length} lights`);
-                    this.setState({lights})
+            this.api.lights()
+                .then(({lights}) => {
+                    console.log(`Found ${lights.length} lights`);
+                    this.setState({lights: arrayToObject(lights, 'id')});
                 })
                 .catch(this.handleError)
         );
@@ -108,7 +110,7 @@ class App extends Component {
         return (
             <div className="App container">
                 <div className="row my-3 input-group">
-                    <input className="form-control col" ref={(input) => this.input = input} type="text" placeholder="Bridge IP Address" defaultValue={this.hue.bridge || ''}/>
+                    <input className="form-control col" ref={(input) => this.input = input} type="text" placeholder="Bridge IP Address" defaultValue={this.api.bridge || ''}/>
                     <span className="input-group-btn">
                         <button className="btn btn-primary col"
                                 onClick={() => this.runWithLoader(this.authenticate(this.input.value).catch(this.handleError))}>
@@ -117,19 +119,19 @@ class App extends Component {
                     </span>
                 </div>
                 {this.state.error &&
-                <div className="alert alert-danger mt-4" role="alert">
-                    <button type="button" className="close" data-dismiss="alert" aria-label="Close"
-                            onClick={() => this.setState({error: null})}>
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    <strong>Oh snap!</strong> {this.state.error.name + ' ' + this.state.error.message}
-                </div>
+                    <div className="alert alert-danger mt-4" role="alert">
+                        <button type="button" className="close" data-dismiss="alert" aria-label="Close"
+                                onClick={() => this.setState({error: null})}>
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <strong>Oh snap!</strong> {this.state.error.name + ' ' + this.state.error.message}
+                    </div>
                 }
                 {this.state.loading &&
-                <div className="fixed-top text-right">
-                    <i className="fa fa-circle-o-notch fa-spin fa-fw text-info m-2"/>
-                    <span className="sr-only">Loading...</span>
-                </div>
+                    <div className="fixed-top text-right">
+                        <i className="fa fa-circle-o-notch fa-spin fa-fw text-info m-2"/>
+                        <span className="sr-only">Loading...</span>
+                    </div>
                 }
                 <List lights={this.state.lights} setLightState={this.setLightState}/>
             </div>
