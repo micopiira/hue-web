@@ -108,7 +108,7 @@ class App extends Component {
         return (
             <div className="App container">
                 <div className="row my-3 input-group">
-                    <input className="form-control col" ref={(input) => this.input = input} type="text" placeholder="Bridge IP Address" value={this.hue.bridge || ''}/>
+                    <input className="form-control col" ref={(input) => this.input = input} type="text" placeholder="Bridge IP Address" defaultValue={this.hue.bridge || ''}/>
                     <span className="input-group-btn">
                         <button className="btn btn-primary col"
                                 onClick={() => this.runWithLoader(this.authenticate(this.input.value).catch(this.handleError))}>
