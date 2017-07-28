@@ -31,8 +31,8 @@ class App extends Component {
     }
 
     setLightState(key, state) {
-        this.setState(
-            update(this.state, {lights: {[key]: {state: {$merge: state}}}}),
+        this.setState(prevState =>
+            update(prevState, {lights: {[key]: {state: {$merge: state}}}}),
             () => this._setLightState(key, state)
         );
     }
