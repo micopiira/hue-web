@@ -5,7 +5,7 @@ export const effects = ['none', 'colorloop'];
 const octet = (props, propName, componentName) => {
     const value = props[propName];
     if (!(value >= 0 && value <= 255)) {
-        return new Error('Invalid octet');
+        return new Error(`Invalid prop '${propName}' supplied to '${componentName}'. Octet value should be 0 - 255, '${value}' given.`);
     }
 };
 
