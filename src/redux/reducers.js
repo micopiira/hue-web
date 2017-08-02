@@ -1,9 +1,40 @@
 import update from 'immutability-helper';
-import {SET_LIGHT_STATE} from './actions';
+import { types } from './actions';
+import { HueApi } from 'node-hue-api';
+
+export const error = (state = null, action) => {
+    switch (action.type) {
+        case types.ERROR:
+            return action.payload;
+        default:
+            return state;
+    }
+};
+
+export const api = (state = new HueApi(), action) => {
+    switch (action.type) {
+        case types.LOGIN:
+            const { host, username } = action.payload;
+            return new HueApi(host, username);
+        default:
+            return state;
+    }
+};
+
+export const bridges = (state = {}, action) => {
+    switch (action.type) {
+        case types.FETCH_BRIDGES_SUCCESS:
+            return action.payload;
+        default:
+            return state;
+    }
+};
 
 export const lights = (state = {}, action) => {
     switch (action.type) {
-        case SET_LIGHT_STATE:
+        case types.FETCH_LIGHTS_SUCCESS:
+            return action.payload;
+        case types.SET_LIGHT_STATE:
             const { payload } = action;
             return update(state, {[payload.id]: {state: {$merge: payload.state}}});
         default:

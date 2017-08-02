@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux'
 import ListItem from './ListItem';
 import PropTypes from 'prop-types';
 import propTypes from '../propTypes';
@@ -15,4 +16,8 @@ List.propTypes = {
     setLightState: PropTypes.func
 };
 
-export default List;
+const mapStateToProps = ({lights}, ownProps) => ({
+    lights
+});
+
+export default connect(mapStateToProps)(List);

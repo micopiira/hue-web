@@ -1,6 +1,75 @@
-export const SET_LIGHT_STATE = 'SET_LIGHT_STATE';
+import Hue from 'node-hue-api';
+
+export const types = {
+    SET_LIGHT_STATE: 'SET_LIGHT_STATE',
+    FETCH_LIGHTS_SUCCESS: 'FETCH_LIGHTS_SUCCESS',
+    FETCH_BRIDGES_SUCCESS: 'FETCH_BRIDGES_SUCCESS',
+    LOGIN: 'LOGIN',
+    ERROR: 'ERROR'
+};
+
+const arrayToObject = (arr, keyField) => Object.assign({}, ...arr.map(item => ({[item[keyField]]: item})));
 
 export const setLightState = (id, state) => ({
-    type: SET_LIGHT_STATE,
+    type: types.SET_LIGHT_STATE,
     payload: {id, state}
 });
+
+export const fetchLightsSuccess = lights => ({
+    type: types.FETCH_LIGHTS_SUCCESS,
+    payload: lights
+});
+
+export const fetchBridgesSuccess = bridges => ({
+    type: types.FETCH_BRIDGES_SUCCESS,
+    payload: bridges
+});
+
+export const login = (bridge, username) => ({
+    type: 'LOGIN',
+    payload: {host: bridge.ipaddress, username}
+});
+
+export const createError = error => ({
+    type: types.ERROR,
+    payload: error
+});
+
+export const fetchBridgesThunk = () => dispatch =>
+    Hue.nupnpSearch().then(bridges => {
+        dispatch(fetchBridgesSuccess(arrayToObject(bridges, 'id')));
+    });
+
+export const setLightStateThunk = (id, state) => (dispatch, getState) => {
+    dispatch(setLightState(id, state));
+    return getState().api.setLightState(id, state).then(() => dispatch(fetchLightsThunk()));
+};
+
+export const fetchLightsThunk = () => (dispatch, getState) =>
+    getState().api.lights()
+        .then(({lights}) => {
+            console.log(`Found ${lights.length} lights`);
+            dispatch(fetchLightsSuccess(arrayToObject(lights, 'id')));
+        })
+        .catch(error => dispatch(createError(error)));
+
+export const loginOrRegisterThunk = bridge => (dispatch, getState) => new Promise((resolve, reject) => {
+    const username = localStorage.getItem(bridge.ipaddress);
+    if (username) {
+        console.log(`Found username for bridge ${bridge.ipaddress}`);
+        resolve(username);
+    } else {
+        console.log(`No username found for bridge ${bridge.ipaddress}, starting linking`);
+        if (window.confirm(`Press link button on bridge ${bridge.ipaddress} and then click OK`)) {
+            getState().api.createUser(bridge.ipaddress).then(username => {
+                localStorage.setItem(bridge.ipaddress, username);
+                resolve(username);
+            }).catch(reject);
+        } else {
+            reject("User cancelled linking");
+        }
+    }
+}).then(username => {
+    dispatch(login(bridge, username))
+});
+
