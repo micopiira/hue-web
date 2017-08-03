@@ -3,6 +3,9 @@ import PropTypes from 'prop-types';
 import propTypes, {effects} from '../propTypes';
 import ColorPicker from './ColorPicker/ColorPicker';
 import CtColorPicker from "./ColorPicker/CtColorPicker";
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { setLightStateThunk } from '../redux/actions';
 
 const ListItem = ({light, setLightState}) =>
     <div className="card">
@@ -60,4 +63,8 @@ ListItem.propTypes = {
     setLightState: PropTypes.func,
 };
 
-export default ListItem;
+const mapDispatchToProps = (dispatch, ownProps) => bindActionCreators({
+    setLightState: state => setLightStateThunk(ownProps.light.id, state)
+}, dispatch);
+
+export default connect(null, mapDispatchToProps)(ListItem);
