@@ -16,6 +16,10 @@ export default {
         g: octet,
         b: octet
     }),
+    bridge: PropTypes.shape({
+        id: PropTypes.string,
+        ipaddress: PropTypes.string,
+    }),
     light: PropTypes.shape({
         manufacturername: PropTypes.string,
         modelid: PropTypes.string,

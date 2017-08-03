@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import { connect } from 'react-redux'
 import './App.css';
 import PropTypes from 'prop-types';
+import propTypes from '../../propTypes';
+
 import List from '../List';
 import 'font-awesome/css/font-awesome.css';
 import 'bootstrap/dist/css/bootstrap.css';
@@ -11,11 +13,10 @@ class App extends Component {
     static propTypes = {
         error: PropTypes.object,
         dispatch: PropTypes.func,
-        bridges: PropTypes.object
+        bridges: PropTypes.objectOf(propTypes.bridge)
     };
 
     componentDidMount() {
-        console.log('componentDidMount');
         this.props.dispatch(fetchBridgesThunk())
             .then(() =>
                 this.props.dispatch(loginOrRegisterThunk(this.props.bridges[Object.keys(this.props.bridges)[0]]))
