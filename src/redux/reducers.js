@@ -1,4 +1,3 @@
-import update from 'immutability-helper';
 import { types } from './actions';
 import { HueApi } from 'node-hue-api';
 
@@ -36,7 +35,7 @@ export const lights = (state = {}, action) => {
             return action.payload;
         case types.SET_LIGHT_STATE:
             const { payload } = action;
-            return update(state, {[payload.id]: {state: {$merge: payload.state}}});
+            return {...state, ...{[payload.id]: {...state[payload.id], ...{state: {...state[payload.id].state, ...payload.state}}}}};
         default:
             return state;
     }
