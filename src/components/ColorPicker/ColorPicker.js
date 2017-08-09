@@ -11,7 +11,8 @@ class ColorPicker extends React.Component {
     state = {
         r: 0,
         g: 0,
-        b: 0
+        b: 0,
+        visible: false
     };
     constructor() {
         super();
@@ -63,7 +64,32 @@ class ColorPicker extends React.Component {
         this.drawColorWheel();
     }
     render() {
-        return <div><canvas className="img-fluid" height={300} ref="canvas" onClick={this.handleClick}/></div>;
+        return <div style={{position: 'relative'}}>
+            <div
+                onMouseOver={() => this.setState({visible: true})}
+                onMouseOut={() => this.setState({visible: false})}
+                style={{
+                    height: 50,
+                    width: 50,
+                    backgroundColor: `rgb(${this.state.r},${this.state.g},${this.state.b})`,
+                    border: '1px solid black'
+                }}/>
+            <canvas
+                onMouseOver={() => this.setState({visible: true})}
+                onMouseOut={() => this.setState({visible: false})}
+                style={{
+                    visibility: this.state.visible ? 'visible' : 'hidden',
+                    border: '1px solid black',
+                    position: 'absolute',
+                    zIndex: 999,
+                    top: 50,
+                    left: 0
+                }}
+                className="img-fluid"
+                height={300}
+                ref="canvas"
+                onClick={this.handleClick}/>
+        </div>;
     }
 }
 
