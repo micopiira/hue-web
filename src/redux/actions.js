@@ -4,6 +4,7 @@ export const types = {
     SET_LIGHT_STATE: 'SET_LIGHT_STATE',
     FETCH_LIGHTS_SUCCESS: 'FETCH_LIGHTS_SUCCESS',
     FETCH_BRIDGES_SUCCESS: 'FETCH_BRIDGES_SUCCESS',
+    FETCH_GROUPS_SUCCESS: 'FETCH_GROUPS_SUCCESS',
     LOGIN: 'LOGIN',
     ERROR: 'ERROR'
 };
@@ -18,6 +19,11 @@ export const setLightState = (id, state) => ({
 export const fetchLightsSuccess = lights => ({
     type: types.FETCH_LIGHTS_SUCCESS,
     payload: lights
+});
+
+export const fetchGroupsSuccess = groups => ({
+    type: types.FETCH_GROUPS_SUCCESS,
+    payload: groups
 });
 
 export const fetchBridgesSuccess = bridges => ({
@@ -45,10 +51,16 @@ export const setLightStateThunk = (id, state) => (dispatch, getState) => {
     return getState().api.setLightState(id, state).then(() => dispatch(fetchLightsThunk()));
 };
 
+export const fetchGroupsThunk = () => (dispatch, getState) =>
+    getState().api.groups()
+        .then(groups => {
+            dispatch(fetchGroupsSuccess(arrayToObject(groups, 'id')));
+        })
+        .catch(error => dispatch(createError(error)));
+
 export const fetchLightsThunk = () => (dispatch, getState) =>
     getState().api.lights()
         .then(({lights}) => {
-            console.log(`Found ${lights.length} lights`);
             dispatch(fetchLightsSuccess(arrayToObject(lights, 'id')));
         })
         .catch(error => dispatch(createError(error)));
@@ -56,10 +68,8 @@ export const fetchLightsThunk = () => (dispatch, getState) =>
 export const loginOrRegisterThunk = bridge => (dispatch, getState) => new Promise((resolve, reject) => {
     const username = localStorage.getItem(bridge.ipaddress);
     if (username) {
-        console.log(`Found username for bridge ${bridge.ipaddress}`);
         resolve(username);
     } else {
-        console.log(`No username found for bridge ${bridge.ipaddress}, starting linking`);
         if (window.confirm(`Press link button on bridge ${bridge.ipaddress} and then click OK`)) {
             getState().api.createUser(bridge.ipaddress).then(username => {
                 localStorage.setItem(bridge.ipaddress, username);

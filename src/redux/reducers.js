@@ -20,6 +20,15 @@ export const api = (state = new HueApi(), action) => {
     }
 };
 
+export const groups = (state = {}, action) => {
+    switch (action.type) {
+        case types.FETCH_GROUPS_SUCCESS:
+            return action.payload;
+        default:
+            return state;
+    }
+};
+
 export const bridges = (state = {}, action) => {
     switch (action.type) {
         case types.FETCH_BRIDGES_SUCCESS:

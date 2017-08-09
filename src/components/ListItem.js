@@ -8,8 +8,7 @@ import { bindActionCreators } from 'redux';
 import { setLightStateThunk } from '../redux/actions';
 
 const ListItem = ({light, setLightState}) =>
-    <div className="card">
-        <div className="card-block">
+    <li>
         <div className="row">
             <div className="col-sm-2">
                 <button type="button"
@@ -55,8 +54,7 @@ const ListItem = ({light, setLightState}) =>
             </div>
             </div>
         </div>
-        </div>
-    </div>;
+    </li>;
 
 ListItem.propTypes = {
     light: propTypes.light,

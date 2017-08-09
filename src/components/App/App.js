@@ -3,11 +3,10 @@ import { connect } from 'react-redux'
 import './App.css';
 import PropTypes from 'prop-types';
 import propTypes from '../../propTypes';
-
 import List from '../List';
 import 'font-awesome/css/font-awesome.css';
 import 'bootstrap/dist/css/bootstrap.css';
-import { fetchBridgesThunk, loginOrRegisterThunk, fetchLightsThunk } from '../../redux/actions';
+import {fetchBridgesThunk, loginOrRegisterThunk, fetchLightsThunk, fetchGroupsThunk} from '../../redux/actions';
 
 class App extends Component {
     static propTypes = {
@@ -21,9 +20,10 @@ class App extends Component {
             .then(() =>
                 this.props.dispatch(loginOrRegisterThunk(this.props.bridges[Object.keys(this.props.bridges)[0]]))
             )
-            .then(() =>
-                this.props.dispatch(fetchLightsThunk())
-            );
+            .then(() => {
+                this.props.dispatch(fetchGroupsThunk());
+                this.props.dispatch(fetchLightsThunk());
+            });
     }
 
     render() {
@@ -38,7 +38,7 @@ class App extends Component {
                         </button>
                     </span>
                 </div>
-                {this.props.error &&
+                {false &&
                     <div className="alert alert-danger mt-4" role="alert">
                         <button type="button" className="close" data-dismiss="alert" aria-label="Close"
                                 onClick={() => this.setState({error: null})}>
