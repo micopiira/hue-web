@@ -1,4 +1,4 @@
-import Hue from 'node-hue-api';
+import Hue from "node-hue-api";
 
 export const types = {
     SET_LIGHT_STATE: 'SET_LIGHT_STATE',
@@ -66,13 +66,13 @@ export const fetchLightsThunk = () => (dispatch, getState) =>
         .catch(error => dispatch(createError(error)));
 
 export const loginOrRegisterThunk = bridge => (dispatch, getState) => new Promise((resolve, reject) => {
-    const username = localStorage.getItem(bridge.ipaddress);
+	const username = localStorage.getItem(bridge.id);
     if (username) {
         resolve(username);
     } else {
         if (window.confirm(`Press link button on bridge ${bridge.ipaddress} and then click OK`)) {
             getState().api.createUser(bridge.ipaddress).then(username => {
-                localStorage.setItem(bridge.ipaddress, username);
+				localStorage.setItem(bridge.id, username);
                 resolve(username);
             }).catch(reject);
         } else {
