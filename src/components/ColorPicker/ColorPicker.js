@@ -1,7 +1,7 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { rgb_to_cie } from './cie_rgb_converter';
-import propTypes from '../../propTypes';
+import React from "react";
+import PropTypes from "prop-types";
+import {rgb_to_cie} from "./cie_rgb_converter";
+import propTypes from "../../propTypes";
 
 class ColorPicker extends React.Component {
     static propTypes = {
@@ -78,6 +78,7 @@ class ColorPicker extends React.Component {
                 onMouseOver={() => this.setState({visible: true})}
                 onMouseOut={() => this.setState({visible: false})}
                 style={{
+					backgroundColor: 'white',
                     visibility: this.state.visible ? 'visible' : 'hidden',
                     border: '1px solid black',
                     position: 'absolute',
@@ -85,8 +86,8 @@ class ColorPicker extends React.Component {
                     top: 50,
                     left: 0
                 }}
-                className="img-fluid"
                 height={300}
+                width={300}
                 ref="canvas"
                 onClick={this.handleClick}/>
         </div>;
