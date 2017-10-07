@@ -1,12 +1,12 @@
-import React, {Component} from 'react';
-import { connect } from 'react-redux'
-import './App.css';
-import PropTypes from 'prop-types';
-import propTypes from '../../propTypes';
-import List from '../List';
-import 'font-awesome/css/font-awesome.css';
-import 'bootstrap/dist/css/bootstrap.css';
-import {fetchBridgesThunk, loginOrRegisterThunk, fetchLightsThunk, fetchGroupsThunk} from '../../redux/actions';
+import React, {Component} from "react";
+import {connect} from "react-redux";
+import "./App.css";
+import PropTypes from "prop-types";
+import propTypes from "../../propTypes";
+import List from "../List";
+import "font-awesome/css/font-awesome.css";
+import "bootstrap/dist/css/bootstrap.css";
+import {fetchBridgesThunk, fetchGroupsThunk, fetchLightsThunk, loginOrRegisterThunk} from "../../redux/actions";
 
 class App extends Component {
     static propTypes = {
@@ -29,15 +29,6 @@ class App extends Component {
     render() {
         return (
             <div className="App container">
-                <div className="row my-3 input-group">
-                    <input className="form-control col" ref={(input) => this.input = input} type="text" placeholder="Bridge IP Address"/>
-                    <span className="input-group-btn">
-                        <button className="btn btn-primary col"
-                                onClick={() => this.runWithLoader(this.authenticate(this.input.value).catch(this.handleError))}>
-                            Link
-                        </button>
-                    </span>
-                </div>
                 {false &&
                     <div className="alert alert-danger mt-4" role="alert">
                         <button type="button" className="close" data-dismiss="alert" aria-label="Close"
