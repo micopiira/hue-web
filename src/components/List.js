@@ -12,7 +12,10 @@ const List = ({lights, groups}) =>
                 <li key={groupId}>
                     <h1>{groups[groupId].name}</h1>
                     <ul>
-                        {groupLights.map(lightId => <ListItem key={lightId} light={lights[lightId]}/>)}
+						{groupLights.map(lightId => {
+							const light = lights[lightId];
+							return light ? <ListItem key={lightId} light={light}/> : null;
+						})}
                     </ul>
                 </li>
             );
