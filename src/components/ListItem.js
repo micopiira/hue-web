@@ -1,11 +1,12 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import propTypes, {effects} from '../propTypes';
-import ColorPicker from './ColorPicker/ColorPicker';
+import React from "react";
+import PropTypes from "prop-types";
+import propTypes, {effects} from "../propTypes";
+import ColorPicker from "./ColorPicker/ColorPicker";
 import CtColorPicker from "./ColorPicker/CtColorPicker";
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { setLightStateThunk } from '../redux/actions';
+import {connect} from "react-redux";
+import {bindActionCreators} from "redux";
+import {setLightStateThunk} from "../redux/actions";
+import {cie_to_rgb} from "./ColorPicker/cie_rgb_converter";
 
 const ListItem = ({light, setLightState}) =>
     <li>
@@ -40,7 +41,11 @@ const ListItem = ({light, setLightState}) =>
             <CtColorPicker onChange={({ct}) => setLightState({ct})}/>
             <ColorPicker
                 onChange={({xy}) => setLightState({xy})}
-                color={{h: parseInt(light.state.hue / (65535 / 360), 10), s: light.state.sat / 254, l: 0.5}}/>
+                color={{
+					r: cie_to_rgb(light.state.xy[0], light.state.xy[1], light.state.bri)[0],
+					g: cie_to_rgb(light.state.xy[0], light.state.xy[1], light.state.bri)[1],
+					b: cie_to_rgb(light.state.xy[0], light.state.xy[1], light.state.bri)[2]
+				}}/>
             <div className="form-group row">
                 <label htmlFor="brightness" className="col-sm-6 col-form-label">Brightness</label>
                 <input type="range"
