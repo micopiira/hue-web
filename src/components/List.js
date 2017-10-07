@@ -1,15 +1,15 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import ListItem from './ListItem';
-import PropTypes from 'prop-types';
-import propTypes from '../propTypes';
+import React from "react";
+import {connect} from "react-redux";
+import ListItem from "./ListItem";
+import PropTypes from "prop-types";
+import propTypes from "../propTypes";
 
 const List = ({lights, groups}) =>
     <ul>
         {Object.keys(groups).map(groupId => {
             const groupLights = groups[groupId].lights;
             return (groupLights &&
-                <li>
+                <li key={groupId}>
                     <h1>{groups[groupId].name}</h1>
                     <ul>
                         {groupLights.map(lightId => <ListItem key={lightId} light={lights[lightId]}/>)}
