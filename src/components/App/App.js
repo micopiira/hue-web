@@ -1,6 +1,5 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
-import "./App.css";
 import PropTypes from "prop-types";
 import propTypes from "../../propTypes";
 import List from "../List";
@@ -28,7 +27,7 @@ class App extends Component {
 
     render() {
         return (
-            <div className="App container">
+	        <div className="container">
                 {false &&
                     <div className="alert alert-danger mt-4" role="alert">
                         <button type="button" className="close" data-dismiss="alert" aria-label="Close"
