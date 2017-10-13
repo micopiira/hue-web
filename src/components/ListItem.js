@@ -13,10 +13,10 @@ const ListItem = ({light, setLightState}) =>
 		<div className="row">
 			<div className="col-sm-2">
 				<button type="button"
-						disabled={!light.state.reachable}
-						className={'btn btn-primary' + (light.state.on ? ' active' : '')}
-						aria-pressed={light.state.on}
-						onClick={() => setLightState({on: !light.state.on})}>
+				        disabled={!light.state.reachable}
+				        className={'btn btn-primary' + (light.state.on ? ' active' : '')}
+				        aria-pressed={light.state.on}
+				        onClick={() => setLightState({on: !light.state.on})}>
 					<i className="fa fa-power-off" aria-hidden="true"/>
 				</button>
 			</div>
@@ -29,10 +29,10 @@ const ListItem = ({light, setLightState}) =>
 						Effect
 					</label>
 					<select disabled={!light.state.on || !light.state.reachable}
-							id="effect"
-							className="form-control col-sm-6"
-							onChange={(event) => setLightState({effect: event.target.value})}
-							value={light.state.effect}>
+					        id="effect"
+					        className="form-control col-sm-6"
+					        onChange={(event) => setLightState({effect: event.target.value})}
+					        value={light.state.effect}>
 						{effects.map(effect =>
 							<option key={effect} value={effect}>{effect}</option>
 						)}
@@ -52,13 +52,13 @@ const ListItem = ({light, setLightState}) =>
 				<div className="form-group row">
 					<label htmlFor="brightness" className="col-sm-6 col-form-label">Brightness</label>
 					<input type="range"
-						   className="col-sm-6"
-						   id="brightness"
-						   disabled={!light.state.on || !light.state.reachable}
-						   value={light.state.bri}
-						   onChange={(event) => setLightState({bri: parseInt(event.target.value, 10)})}
-						   min={0}
-						   max={254}/>
+					       className="col-sm-6"
+					       id="brightness"
+					       disabled={!light.state.on || !light.state.reachable}
+					       value={light.state.bri}
+					       onChange={(event) => setLightState({bri: parseInt(event.target.value, 10)})}
+					       min={0}
+					       max={254}/>
 				</div>
 			</div>
 		</div>

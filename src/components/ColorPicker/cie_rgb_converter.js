@@ -53,35 +53,35 @@ const toNumber = input => isNaN(input) ? 0 : input;
  */
 export function cie_to_rgb(x, y, brightness = 254) {
 
-    const z = 1.0 - x - y;
-    const Y = (brightness / 254).toFixed(2);
-    const X = (Y / y) * x;
-    const Z = (Y / y) * z;
+	const z = 1.0 - x - y;
+	const Y = (brightness / 254).toFixed(2);
+	const X = (Y / y) * x;
+	const Z = (Y / y) * z;
 
-    //Convert to RGB using Wide RGB D65 conversion
-    let red = X * 1.656492 - Y * 0.354851 - Z * 0.255038;
-    let green = -X * 0.707196 + Y * 1.655397 + Z * 0.036152;
-    let blue = X * 0.051713 - Y * 0.121364 + Z * 1.011530;
+	//Convert to RGB using Wide RGB D65 conversion
+	let red = X * 1.656492 - Y * 0.354851 - Z * 0.255038;
+	let green = -X * 0.707196 + Y * 1.655397 + Z * 0.036152;
+	let blue = X * 0.051713 - Y * 0.121364 + Z * 1.011530;
 
-    //If red, green or blue is larger than 1.0 set it back to the maximum of 1.0
-    if (red > blue && red > green && red > 1.0) {
-        green = green / red;
-        blue = blue / red;
-        red = 1.0;
-    } else if (green > blue && green > red && green > 1.0) {
-        red = red / green;
-        blue = blue / green;
-        green = 1.0;
-    } else if (blue > red && blue > green && blue > 1.0) {
-        red = red / blue;
-        green = green / blue;
-        blue = 1.0;
-    }
+	//If red, green or blue is larger than 1.0 set it back to the maximum of 1.0
+	if (red > blue && red > green && red > 1.0) {
+		green = green / red;
+		blue = blue / red;
+		red = 1.0;
+	} else if (green > blue && green > red && green > 1.0) {
+		red = red / green;
+		blue = blue / green;
+		green = 1.0;
+	} else if (blue > red && blue > green && blue > 1.0) {
+		red = red / blue;
+		green = green / blue;
+		blue = 1.0;
+	}
 
-    return [red, green, blue]
-        .map(reverseGammaCorrection)
-        .map(color => Math.round(color * 255)) //Convert normalized decimal to decimal
-        .map(toNumber);
+	return [red, green, blue]
+		.map(reverseGammaCorrection)
+		.map(color => Math.round(color * 255)) //Convert normalized decimal to decimal
+		.map(toNumber);
 }
 
 /**
@@ -94,15 +94,15 @@ export function cie_to_rgb(x, y, brightness = 254) {
  */
 export function rgb_to_cie(red, green, blue) {
 
-    //Apply a gamma correction to the RGB values, which makes the color more vivid and more the like the color displayed on the screen of your device
-    red = gammaCorrect(red);
-    green = gammaCorrect(green);
-    blue = gammaCorrect(blue);
+	//Apply a gamma correction to the RGB values, which makes the color more vivid and more the like the color displayed on the screen of your device
+	red = gammaCorrect(red);
+	green = gammaCorrect(green);
+	blue = gammaCorrect(blue);
 
-    //RGB values to XYZ using the Wide RGB D65 conversion formula
-    const X = red * 0.664511 + green * 0.154324 + blue * 0.162028;
-    const Y = red * 0.283881 + green * 0.668433 + blue * 0.047685;
-    const Z = red * 0.000088 + green * 0.072310 + blue * 0.986039;
+	//RGB values to XYZ using the Wide RGB D65 conversion formula
+	const X = red * 0.664511 + green * 0.154324 + blue * 0.162028;
+	const Y = red * 0.283881 + green * 0.668433 + blue * 0.047685;
+	const Z = red * 0.000088 + green * 0.072310 + blue * 0.986039;
 
-    return XYZtoxy(X, Y, Z).map(toNumber);
+	return XYZtoxy(X, Y, Z).map(toNumber);
 }

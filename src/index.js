@@ -7,16 +7,15 @@ import thunk from "redux-thunk";
 import App from "./components/App/App";
 import * as reducers from "./redux/reducers";
 import registerServiceWorker from "./registerServiceWorker";
-import "./index.css";
 
 const logger = createLogger({collapsed: true});
 
 const store = createStore(
-    combineReducers(reducers),
+	combineReducers(reducers),
 	localStorage.getItem('reduxState') ? JSON.parse(localStorage.getItem('reduxState')) : {},
-    compose(
-        applyMiddleware(thunk, logger),
-    )
+	compose(
+		applyMiddleware(thunk, logger),
+	)
 );
 
 store.subscribe(() => {
@@ -25,9 +24,9 @@ store.subscribe(() => {
 });
 
 ReactDOM.render(
-    <Provider {...{store}}>
-        <App/>
-    </Provider>,
-    document.getElementById('root')
+	<Provider {...{store}}>
+		<App/>
+	</Provider>,
+	document.getElementById('root')
 );
 registerServiceWorker();
