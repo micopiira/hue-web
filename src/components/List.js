@@ -4,7 +4,7 @@ import ListItem from "./ListItem";
 import PropTypes from "prop-types";
 import propTypes from "../propTypes";
 
-const List = ({lights, groups}) =>
+export const List = ({lights, groups}) =>
 	<div>
 		{Object.keys(groups).map(groupId => {
 			const groupLights = groups[groupId].lights;

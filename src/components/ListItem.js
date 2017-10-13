@@ -8,7 +8,7 @@ import {bindActionCreators} from "redux";
 import {setLightStateThunk} from "../redux/actions";
 import {cie_to_rgb} from "./ColorPicker/cie_rgb_converter";
 
-const ListItem = ({light, setLightState}) =>
+export const ListItem = ({light, setLightState}) =>
 	<li className="list-group-item">
 		<div className="row">
 			<div className="col-sm-2">
