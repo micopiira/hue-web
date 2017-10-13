@@ -13,11 +13,16 @@ const logger = createLogger({collapsed: true});
 
 const store = createStore(
     combineReducers(reducers),
-    undefined,
+	localStorage.getItem('reduxState') ? JSON.parse(localStorage.getItem('reduxState')) : {},
     compose(
         applyMiddleware(thunk, logger),
     )
 );
+
+store.subscribe(() => {
+	const persistedState = (({usernames}) => ({usernames}))(store.getState());
+	localStorage.setItem('reduxState', JSON.stringify(persistedState));
+});
 
 ReactDOM.render(
     <Provider {...{store}}>

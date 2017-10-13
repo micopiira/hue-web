@@ -6,7 +6,8 @@ export const types = {
     FETCH_BRIDGES_SUCCESS: 'FETCH_BRIDGES_SUCCESS',
     FETCH_GROUPS_SUCCESS: 'FETCH_GROUPS_SUCCESS',
     LOGIN: 'LOGIN',
-    ERROR: 'ERROR'
+	ERROR: 'ERROR',
+	REGISTER: 'REGISTER'
 };
 
 const arrayToObject = (arr, keyField) => Object.assign({}, ...arr.map(item => ({[item[keyField]]: item})));
@@ -29,6 +30,11 @@ export const fetchGroupsSuccess = groups => ({
 export const fetchBridgesSuccess = bridges => ({
     type: types.FETCH_BRIDGES_SUCCESS,
     payload: bridges
+});
+
+export const register = (bridgeId, username) => ({
+	type: types.REGISTER,
+	payload: {bridgeId, username}
 });
 
 export const login = (bridge, username) => ({
@@ -66,13 +72,13 @@ export const fetchLightsThunk = () => (dispatch, getState) =>
         .catch(error => dispatch(createError(error)));
 
 export const loginOrRegisterThunk = bridge => (dispatch, getState) => new Promise((resolve, reject) => {
-	const username = localStorage.getItem(bridge.id);
+	const username = getState().usernames[bridge.id];
     if (username) {
         resolve(username);
     } else {
         if (window.confirm(`Press link button on bridge ${bridge.ipaddress} and then click OK`)) {
             getState().api.createUser(bridge.ipaddress).then(username => {
-				localStorage.setItem(bridge.id, username);
+	            dispatch(register(bridge.id, username));
                 resolve(username);
             }).catch(reject);
         } else {

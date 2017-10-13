@@ -1,5 +1,5 @@
-import { types } from './actions';
-import { HueApi } from 'node-hue-api';
+import {types} from './actions';
+import {HueApi} from 'node-hue-api';
 
 export const error = (state = null, action) => {
     switch (action.type) {
@@ -36,6 +36,15 @@ export const bridges = (state = {}, action) => {
         default:
             return state;
     }
+};
+
+export const usernames = (state = {}, action) => {
+	switch (action.type) {
+		case types.REGISTER:
+			return {...state, [action.payload.bridgeId]: action.payload.username};
+		default:
+			return state;
+	}
 };
 
 export const lights = (state = {}, action) => {
