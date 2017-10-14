@@ -11,6 +11,16 @@ const octet = (props, propName, componentName) => {
 
 export default {
 	octet,
+	group: PropTypes.shape({
+		action: PropTypes.object,
+		class: PropTypes.string,
+		id: PropTypes.string,
+		lights: PropTypes.arrayOf(PropTypes.string),
+		name: PropTypes.string,
+		recycle: PropTypes.bool,
+		state: PropTypes.object,
+		type: PropTypes.string
+	}),
 	rgb: PropTypes.shape({
 		r: octet,
 		g: octet,

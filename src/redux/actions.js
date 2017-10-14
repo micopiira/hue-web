@@ -60,7 +60,7 @@ export const setLightStateThunk = (id, state) => (dispatch, getState) => {
 export const fetchGroupsThunk = () => (dispatch, getState) =>
 	getState().api.groups()
 		.then(groups => {
-			dispatch(fetchGroupsSuccess(arrayToObject(groups, 'id')));
+			dispatch(fetchGroupsSuccess(groups));
 		})
 		.catch(error => dispatch(createError(error)));
 
