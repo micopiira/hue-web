@@ -5,11 +5,9 @@ import propTypes from "../propTypes";
 import LightGroup from "./LightGroup";
 
 export const List = ({groups}) =>
-	<div>
-		{groups.map(group => {
-			return <LightGroup key={group.id} group={group}/>;
-		})}
-	</div>;
+	groups.map(group =>
+		<LightGroup key={group.id} group={group}/>
+	);
 
 List.propTypes = {
 	groups: PropTypes.arrayOf(propTypes.group)

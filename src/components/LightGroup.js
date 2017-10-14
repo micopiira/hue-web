@@ -8,9 +8,9 @@ export const LightGroup = ({group, lights}) =>
 	<div className="card mb-3">
 		<div className="card-header">{group.name}</div>
 		<ul className="list-group list-group-flush">
-			{lights.map(light => {
-				return light ? <ListItem key={light.uniqueid} light={light}/> : null;
-			})}
+			{lights.map(light =>
+				<ListItem key={light.uniqueid} light={light}/>
+			)}
 		</ul>
 	</div>;
 
@@ -19,8 +19,10 @@ LightGroup.propTypes = {
 	lights: PropTypes.arrayOf(propTypes.light)
 };
 
+const identity = x => x;
+
 const mapStateToProps = ({lights}, ownProps) => ({
-	lights: ownProps.group.lights.map(lightId => lights[lightId]),
+	lights: ownProps.group.lights.map(lightId => lights[lightId]).filter(identity),
 });
 
 export default connect(mapStateToProps)(LightGroup);
