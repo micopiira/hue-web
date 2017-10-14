@@ -6,6 +6,7 @@ import List from "../List";
 import "font-awesome/css/font-awesome.css";
 import "bootstrap/dist/css/bootstrap.css";
 import {fetchBridgesThunk, fetchGroupsThunk, fetchLightsThunk, loginOrRegisterThunk} from "../../redux/actions";
+import {LoadingIndicator} from "../LoadingIndicator";
 
 class App extends Component {
 	static propTypes = {
@@ -46,8 +47,7 @@ class App extends Component {
 				}
 				{this.state.loading &&
 				<div className="fixed-top text-right">
-					<i className="fa fa-circle-o-notch fa-spin fa-fw text-info m-2"/>
-					<span className="sr-only">Loading...</span>
+					<LoadingIndicator/>
 				</div>
 				}
 				<List/>
