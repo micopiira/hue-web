@@ -6,8 +6,8 @@ import LightGroup from "./LightGroup";
 
 export const List = ({groups}) =>
 	<div>
-		{Object.keys(groups).map(groupId => {
-			return <LightGroup key={groupId} group={groups[groupId]}/>;
+		{groups.map(group => {
+			return <LightGroup key={group.id} group={group}/>;
 		})}
 	</div>;
 
