@@ -10,9 +10,11 @@ import registerServiceWorker from "./registerServiceWorker";
 
 const logger = createLogger({collapsed: true});
 
+const LOCAL_STORAGE_STATE_KEY = 'reduxState';
+
 const store = createStore(
 	combineReducers(reducers),
-	localStorage.getItem('reduxState') ? JSON.parse(localStorage.getItem('reduxState')) : {},
+	localStorage.getItem(LOCAL_STORAGE_STATE_KEY) ? JSON.parse(localStorage.getItem(LOCAL_STORAGE_STATE_KEY)) : {},
 	compose(
 		applyMiddleware(thunk, logger),
 	)
@@ -20,7 +22,7 @@ const store = createStore(
 
 store.subscribe(() => {
 	const persistedState = (({usernames}) => ({usernames}))(store.getState());
-	localStorage.setItem('reduxState', JSON.stringify(persistedState));
+	localStorage.setItem(LOCAL_STORAGE_STATE_KEY, JSON.stringify(persistedState));
 });
 
 ReactDOM.render(
