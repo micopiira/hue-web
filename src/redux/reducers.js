@@ -29,7 +29,7 @@ export const groups = (state = [], action) => {
 	}
 };
 
-export const bridges = (state = {}, action) => {
+export const bridges = (state = [], action) => {
 	switch (action.type) {
 		case types.FETCH_BRIDGES_SUCCESS:
 			return action.payload;

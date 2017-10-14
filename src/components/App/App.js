@@ -58,7 +58,7 @@ class App extends Component {
 
 const mapStateToProps = ({error, bridges}, ownProps) => ({
 	error,
-	bridges: Object.keys(bridges).map(key => bridges[key])
+	bridges
 });
 
 export default connect(mapStateToProps)(App);

@@ -49,7 +49,7 @@ export const createError = error => ({
 
 export const fetchBridgesThunk = () => dispatch =>
 	Hue.nupnpSearch().then(bridges => {
-		dispatch(fetchBridgesSuccess(arrayToObject(bridges, 'id')));
+		dispatch(fetchBridgesSuccess(bridges));
 	});
 
 export const setLightStateThunk = (id, state) => (dispatch, getState) => {
