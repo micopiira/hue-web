@@ -1,15 +1,6 @@
 import {types} from './actions';
 import {HueApi} from 'node-hue-api';
 
-export const error = (state = null, action) => {
-	switch (action.type) {
-		case types.ERROR:
-			return action.payload;
-		default:
-			return state;
-	}
-};
-
 export const api = (state = new HueApi(), action) => {
 	switch (action.type) {
 		case types.LOGIN:

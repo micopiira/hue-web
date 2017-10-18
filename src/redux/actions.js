@@ -6,7 +6,6 @@ export const types = {
 	FETCH_BRIDGES_SUCCESS: 'FETCH_BRIDGES_SUCCESS',
 	FETCH_GROUPS_SUCCESS: 'FETCH_GROUPS_SUCCESS',
 	LOGIN: 'LOGIN',
-	ERROR: 'ERROR',
 	REGISTER: 'REGISTER'
 };
 
@@ -42,11 +41,6 @@ export const login = (bridge, username) => ({
 	payload: {bridge, username}
 });
 
-export const createError = error => ({
-	type: types.ERROR,
-	payload: error
-});
-
 export const fetchBridgesThunk = () => dispatch =>
 	Hue.nupnpSearch().then(bridges => {
 		dispatch(fetchBridgesSuccess(bridges));
@@ -61,15 +55,13 @@ export const fetchGroupsThunk = () => (dispatch, getState) =>
 	getState().api.groups()
 		.then(groups => {
 			dispatch(fetchGroupsSuccess(groups));
-		})
-		.catch(error => dispatch(createError(error)));
+		});
 
 export const fetchLightsThunk = () => (dispatch, getState) =>
 	getState().api.lights()
 		.then(({lights}) => {
 			dispatch(fetchLightsSuccess(arrayToObject(lights, 'id')));
-		})
-		.catch(error => dispatch(createError(error)));
+		});
 
 export const loginOrRegisterThunk = bridge => (dispatch, getState) => new Promise((resolve, reject) => {
 	const username = getState().usernames[bridge.id];
