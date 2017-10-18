@@ -1,10 +1,15 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
-import {loginOrRegisterThunk} from "../redux/actions";
+import {fetchBridgesThunk, loginOrRegisterThunk} from "../redux/actions";
 
 class Setup extends Component {
+
+	componentDidMount() {
+		this.props.dispatch(fetchBridgesThunk());
+	}
+
 	render() {
-		return <ul>
+		return this.props.bridges.length > 0 ? <ul>
 			{this.props.bridges.map(bridge =>
 				<li key={bridge.id}>
 					{bridge.ipaddress}
@@ -13,11 +18,11 @@ class Setup extends Component {
 					</button>
 				</li>
 			)}
-		</ul>;
+		</ul> : <p>No bridges found</p>;
 	}
 }
 
-const mapStateToProps = ({bridges}, ownProps) => ({
+const mapStateToProps = ({bridges}) => ({
 	bridges
 });
 
