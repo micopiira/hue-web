@@ -38,8 +38,8 @@ export const register = (bridgeId, username) => ({
 });
 
 export const login = (bridge, username) => ({
-	type: 'LOGIN',
-	payload: {host: bridge.ipaddress, username}
+	type: types.LOGIN,
+	payload: {bridge, username}
 });
 
 export const createError = error => ({

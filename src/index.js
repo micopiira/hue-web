@@ -21,7 +21,7 @@ const store = createStore(
 );
 
 store.subscribe(() => {
-	const persistedState = (({usernames}) => ({usernames}))(store.getState());
+	const persistedState = (({usernames, currentBridge}) => ({usernames, currentBridge}))(store.getState());
 	localStorage.setItem(LOCAL_STORAGE_STATE_KEY, JSON.stringify(persistedState));
 });
 

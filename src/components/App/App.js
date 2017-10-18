@@ -5,14 +5,16 @@ import propTypes from "../../propTypes";
 import List from "../List";
 import "font-awesome/css/font-awesome.css";
 import "bootstrap/dist/css/bootstrap.css";
-import {fetchBridgesThunk, fetchGroupsThunk, fetchLightsThunk, loginOrRegisterThunk} from "../../redux/actions";
+import {fetchBridgesThunk} from "../../redux/actions";
 import {LoadingIndicator} from "../LoadingIndicator";
+import Setup from '../Setup';
 
 class App extends Component {
 	static propTypes = {
 		error: PropTypes.object,
 		dispatch: PropTypes.func,
-		bridges: PropTypes.arrayOf(propTypes.bridge)
+		bridges: PropTypes.arrayOf(propTypes.bridge),
+		currentBridge: propTypes.bridge
 	};
 	state = {
 		loading: false,
@@ -20,17 +22,7 @@ class App extends Component {
 	};
 
 	componentDidMount() {
-		this.setState({loading: true});
-		this.props.dispatch(fetchBridgesThunk())
-			.then(() =>
-				this.props.dispatch(loginOrRegisterThunk(this.props.bridges[0]))
-			)
-			.then(() => {
-				this.props.dispatch(fetchGroupsThunk());
-				this.props.dispatch(fetchLightsThunk());
-			})
-			.catch(error => this.setState({error}))
-			.finally(() => this.setState({loading: false}));
+		this.props.dispatch(fetchBridgesThunk());
 	}
 
 	render() {
@@ -50,15 +42,16 @@ class App extends Component {
 					<LoadingIndicator/>
 				</div>
 				}
-				<List/>
+				{this.props.currentBridge ? <List/> : <Setup/>}
 			</div>
 		);
 	}
 }
 
-const mapStateToProps = ({error, bridges}, ownProps) => ({
+const mapStateToProps = ({error, bridges, currentBridge}, ownProps) => ({
 	error,
-	bridges
+	bridges,
+	currentBridge
 });
 
 export default connect(mapStateToProps)(App);

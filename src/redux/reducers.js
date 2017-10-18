@@ -13,8 +13,17 @@ export const error = (state = null, action) => {
 export const api = (state = new HueApi(), action) => {
 	switch (action.type) {
 		case types.LOGIN:
-			const {host, username} = action.payload;
-			return new HueApi(host, username);
+			const {bridge, username} = action.payload;
+			return new HueApi(bridge.ipaddress, username);
+		default:
+			return state;
+	}
+};
+
+export const currentBridge = (state = null, action) => {
+	switch (action.type) {
+		case types.LOGIN:
+			return action.payload.bridge;
 		default:
 			return state;
 	}
