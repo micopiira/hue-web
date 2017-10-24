@@ -37,9 +37,8 @@ class App extends Component {
 	}
 }
 
-
-const mapStateToProps = ({currentBridge}) => ({
-	currentBridge
+const mapStateToProps = ({currentBridge, bridges}) => ({
+	currentBridge: bridges.find(bridge => bridge.id === currentBridge)
 });
 
 export default connect(mapStateToProps)(App);

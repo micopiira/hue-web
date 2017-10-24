@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import PropTypes from "prop-types";
 import propTypes from "../propTypes";
 import LightGroup from "./LightGroup";
-import {fetchGroupsThunk, fetchLightsThunk, login} from "../redux/actions";
+import {fetchGroupsThunk, fetchLightsThunk, login, logout} from "../redux/actions";
 
 class List extends React.Component {
 	static propTypes = {
@@ -12,9 +12,13 @@ class List extends React.Component {
 	};
 
 	componentDidMount() {
-		this.props.dispatch(login(this.props.currentBridge, this.props.username));
-		this.props.dispatch(fetchGroupsThunk());
-		this.props.dispatch(fetchLightsThunk());
+		if (this.props.username) {
+			this.props.dispatch(login(this.props.currentBridge, this.props.username));
+			this.props.dispatch(fetchGroupsThunk());
+			this.props.dispatch(fetchLightsThunk());
+		} else {
+			this.props.dispatch(logout());
+		}
 	}
 
 	render() {
@@ -24,10 +28,10 @@ class List extends React.Component {
 	}
 }
 
-const mapStateToProps = ({groups, usernames, currentBridge}) => ({
+const mapStateToProps = ({groups, usernames, currentBridge, bridges}) => ({
 	groups: groups.filter(group => group.lights),
-	username: usernames[currentBridge.id],
-	currentBridge
+	username: usernames[currentBridge],
+	currentBridge: bridges.find(bridge => bridge.id === currentBridge)
 });
 
 export default connect(mapStateToProps)(List);

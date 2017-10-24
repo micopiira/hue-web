@@ -6,7 +6,8 @@ export const types = {
 	FETCH_BRIDGES_SUCCESS: 'FETCH_BRIDGES_SUCCESS',
 	FETCH_GROUPS_SUCCESS: 'FETCH_GROUPS_SUCCESS',
 	LOGIN: 'LOGIN',
-	REGISTER: 'REGISTER'
+	REGISTER: 'REGISTER',
+	LOGOUT: 'LOGOUT'
 };
 
 const arrayToObject = (arr, keyField) => Object.assign({}, ...arr.map(item => ({[item[keyField]]: item})));
@@ -34,6 +35,10 @@ export const fetchBridgesSuccess = bridges => ({
 export const register = (bridgeId, username) => ({
 	type: types.REGISTER,
 	payload: {bridgeId, username}
+});
+
+export const logout = () => ({
+	type: types.LOGOUT
 });
 
 export const login = (bridge, username) => ({

@@ -14,7 +14,9 @@ export const api = (state = new HueApi(), action) => {
 export const currentBridge = (state = null, action) => {
 	switch (action.type) {
 		case types.LOGIN:
-			return action.payload.bridge;
+			return action.payload.bridge.id;
+		case types.LOGOUT:
+			return null;
 		default:
 			return state;
 	}
