@@ -5,6 +5,7 @@ import {applyMiddleware, combineReducers, compose, createStore} from "redux";
 import {createLogger} from "redux-logger";
 import thunk from "redux-thunk";
 import App from "./components/App/App";
+import ErrorBoundary from "./components/ErrorBoundary";
 import * as reducers from "./redux/reducers";
 import registerServiceWorker from "./registerServiceWorker";
 
@@ -27,7 +28,9 @@ store.subscribe(() => {
 
 ReactDOM.render(
 	<Provider {...{store}}>
-		<App/>
+		<ErrorBoundary>
+			<App/>
+		</ErrorBoundary>
 	</Provider>,
 	document.getElementById('root')
 );
