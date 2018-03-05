@@ -11,6 +11,10 @@ export const api = (state = new HueApi(), action) => {
 	}
 };
 
+export const loading = (state = false, action) => {
+	return !action.type.includes("_SUCCESS");
+};
+
 export const currentBridge = (state = null, action) => {
 	switch (action.type) {
 		case types.LOGIN:

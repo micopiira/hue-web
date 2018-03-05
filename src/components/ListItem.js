@@ -9,7 +9,9 @@ import {setLightStateThunk} from "../redux/actions";
 import {cie_to_rgb} from "./ColorPicker/cie_rgb_converter";
 
 export const ListItem = ({light, setLightState}) =>
-	<li className="list-group-item">
+	<div className="card">
+		<div className="card-body">
+
 		<div className="row">
 			<div className="col-sm-2">
 				<button type="button"
@@ -22,47 +24,55 @@ export const ListItem = ({light, setLightState}) =>
 			</div>
 			<div className="col-sm-10"><h5>{light.name}</h5></div>
 		</div>
-		<div className="row">
-			<div className="col">
-				<div className="form-group row">
-					<label htmlFor="effect" className="col-sm-6 col-form-label">
-						Effect
-					</label>
-					<select disabled={!light.state.on || !light.state.reachable}
-					        id="effect"
-					        className="form-control col-sm-6"
-					        onChange={(event) => setLightState({effect: event.target.value})}
-					        value={light.state.effect}>
-						{effects.map(effect =>
-							<option key={effect} value={effect}>{effect}</option>
-						)}
-					</select>
-				</div>
-				<div className="form-group row">
-					<label htmlFor="color" className="col-sm-6 col-form-label">Color</label>
-					<ColorPicker
-						onChange={({xy}) => setLightState({xy})}
-						color={{
-							r: cie_to_rgb(light.state.xy[0], light.state.xy[1], light.state.bri)[0],
-							g: cie_to_rgb(light.state.xy[0], light.state.xy[1], light.state.bri)[1],
-							b: cie_to_rgb(light.state.xy[0], light.state.xy[1], light.state.bri)[2]
-						}}/>
-					<CtColorPicker onChange={({ct}) => setLightState({ct})}/>
-				</div>
-				<div className="form-group row">
-					<label htmlFor="brightness" className="col-sm-6 col-form-label">Brightness</label>
-					<input type="range"
-					       className="col-sm-6"
-					       id="brightness"
-					       disabled={!light.state.on || !light.state.reachable}
-					       value={light.state.bri}
-					       onChange={(event) => setLightState({bri: parseInt(event.target.value, 10)})}
-					       min={0}
-					       max={254}/>
+
+			{light.state.on &&
+			<div className="row">
+				<div className="col">
+					<div className="form-group">
+						<label htmlFor="effect">Effect</label>
+						<select id="effect"
+						        className="form-control"
+						        onChange={(event) => setLightState({effect: event.target.value})}
+						        value={light.state.effect}>
+							{effects.map(effect =>
+								<option key={effect} value={effect}>{effect}</option>
+							)}
+						</select>
+					</div>
+					<div className="form-group">
+						<label htmlFor="color">Color</label>
+						<div className="row">
+							<div className="col-sm">
+								<ColorPicker
+									onChange={({xy}) => setLightState({xy})}
+									color={{
+										r: cie_to_rgb(light.state.xy[0], light.state.xy[1], light.state.bri)[0],
+										g: cie_to_rgb(light.state.xy[0], light.state.xy[1], light.state.bri)[1],
+										b: cie_to_rgb(light.state.xy[0], light.state.xy[1], light.state.bri)[2]
+									}}/>
+							</div>
+							<div className="col-sm">
+								<CtColorPicker onChange={({ct}) => setLightState({ct})}/>
+							</div>
+						</div>
+					</div>
+					<div className="form-group">
+						<label htmlFor="brightness" className="col-form-label">Brightness</label>
+						<input type="range"
+						       style={{padding: 0}}
+						       className="form-control"
+						       id="brightness"
+						       value={light.state.bri}
+						       onChange={(event) => setLightState({bri: parseInt(event.target.value, 10)})}
+						       min={0}
+						       max={254}/>
+					</div>
 				</div>
 			</div>
+			}
+
 		</div>
-	</li>;
+	</div>;
 
 ListItem.propTypes = {
 	light: propTypes.light,

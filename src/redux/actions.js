@@ -2,7 +2,9 @@ import Hue from "node-hue-api";
 
 export const types = {
 	SET_LIGHT_STATE: 'SET_LIGHT_STATE',
+	FETCH_LIGHTS: 'FETCH_LIGHTS',
 	FETCH_LIGHTS_SUCCESS: 'FETCH_LIGHTS_SUCCESS',
+	FETCH_BRIDGES: 'FETCH_BRIDGES',
 	FETCH_BRIDGES_SUCCESS: 'FETCH_BRIDGES_SUCCESS',
 	FETCH_GROUPS_SUCCESS: 'FETCH_GROUPS_SUCCESS',
 	LOGIN: 'LOGIN',
@@ -46,10 +48,12 @@ export const login = (bridge, username) => ({
 	payload: {bridge, username}
 });
 
-export const fetchBridgesThunk = () => dispatch =>
-	Hue.nupnpSearch().then(bridges => {
+export const fetchBridgesThunk = () => dispatch => {
+	dispatch({type: types.FETCH_BRIDGES});
+	return Hue.nupnpSearch().then(bridges => {
 		dispatch(fetchBridgesSuccess(bridges));
 	});
+};
 
 export const setLightStateThunk = (id, state) => (dispatch, getState) => {
 	dispatch(setLightState(id, state));
@@ -59,14 +63,16 @@ export const setLightStateThunk = (id, state) => (dispatch, getState) => {
 export const fetchGroupsThunk = () => (dispatch, getState) =>
 	getState().api.groups()
 		.then(groups => {
-			dispatch(fetchGroupsSuccess(groups));
+			dispatch(fetchGroupsSuccess(groups.filter(group => group.type === "Room")));
 		});
 
-export const fetchLightsThunk = () => (dispatch, getState) =>
-	getState().api.lights()
+export const fetchLightsThunk = () => (dispatch, getState) => {
+	dispatch({type: types.FETCH_LIGHTS});
+	return getState().api.lights()
 		.then(({lights}) => {
 			dispatch(fetchLightsSuccess(arrayToObject(lights, 'id')));
 		});
+};
 
 export const loginOrRegisterThunk = bridge => (dispatch, getState) => new Promise((resolve, reject) => {
 	const username = getState().usernames[bridge.id];

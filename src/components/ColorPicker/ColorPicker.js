@@ -79,7 +79,7 @@ class ColorPicker extends React.Component {
 				className="custom-select"
 				style={{
 					height: 50,
-					width: 100
+					width: '100%'
 				}}>
 				<div style={{
 					backgroundColor: `rgb(${this.state.r},${this.state.g},${this.state.b})`,
@@ -92,6 +92,7 @@ class ColorPicker extends React.Component {
 				style={{
 					visibility: this.state.visible ? 'visible' : 'hidden',
 					position: 'absolute',
+					cursor: 'pointer',
 					zIndex: 999,
 					top: 50,
 					left: 0
