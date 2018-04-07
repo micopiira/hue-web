@@ -1,4 +1,5 @@
 import Hue from 'node-hue-api';
+import {arrayToObject} from '../fn';
 
 export const types = {
 	SET_LIGHT_STATE: 'SET_LIGHT_STATE',
@@ -11,8 +12,6 @@ export const types = {
 	REGISTER: 'REGISTER',
 	LOGOUT: 'LOGOUT'
 };
-
-const arrayToObject = (arr, keyField) => Object.assign({}, ...arr.map(item => ({[item[keyField]]: item})));
 
 const createActionCreator = (type, payload) => ({type, payload});
 
