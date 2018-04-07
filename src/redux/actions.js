@@ -1,4 +1,4 @@
-import Hue from "node-hue-api";
+import Hue from 'node-hue-api';
 
 export const types = {
 	SET_LIGHT_STATE: 'SET_LIGHT_STATE',
@@ -14,39 +14,15 @@ export const types = {
 
 const arrayToObject = (arr, keyField) => Object.assign({}, ...arr.map(item => ({[item[keyField]]: item})));
 
-export const setLightState = (id, state) => ({
-	type: types.SET_LIGHT_STATE,
-	payload: {id, state}
-});
+const createActionCreator = (type, payload) => ({type, payload});
 
-export const fetchLightsSuccess = lights => ({
-	type: types.FETCH_LIGHTS_SUCCESS,
-	payload: lights
-});
-
-export const fetchGroupsSuccess = groups => ({
-	type: types.FETCH_GROUPS_SUCCESS,
-	payload: groups
-});
-
-export const fetchBridgesSuccess = bridges => ({
-	type: types.FETCH_BRIDGES_SUCCESS,
-	payload: bridges
-});
-
-export const register = (bridgeId, username) => ({
-	type: types.REGISTER,
-	payload: {bridgeId, username}
-});
-
-export const logout = () => ({
-	type: types.LOGOUT
-});
-
-export const login = (bridge, username) => ({
-	type: types.LOGIN,
-	payload: {bridge, username}
-});
+export const setLightState = (id, state) => createActionCreator(types.SET_LIGHT_STATE, {id, state});
+export const fetchLightsSuccess = lights => createActionCreator(types.FETCH_LIGHTS_SUCCESS, lights);
+export const fetchGroupsSuccess = groups => createActionCreator(types.FETCH_GROUPS_SUCCESS, groups);
+export const fetchBridgesSuccess = bridges => createActionCreator(types.FETCH_BRIDGES_SUCCESS, bridges);
+export const register = (bridgeId, username) => createActionCreator(types.REGISTER, {bridgeId, username});
+export const logout = () => createActionCreator(types.LOGOUT);
+export const login = (bridge, username) => createActionCreator(types.LOGIN, {bridge, username});
 
 export const fetchBridgesThunk = () => dispatch => {
 	dispatch({type: types.FETCH_BRIDGES});
