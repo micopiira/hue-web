@@ -20,7 +20,7 @@
   "devDependencies": {
     "@storybook/react": "^3.2.3",
     "gh-pages": "^1.0.0",
-    "react-scripts": "1.0.14"
+    "react-scripts": "1.1.4"
   },
   "scripts": {
     "start": "react-scripts start",
