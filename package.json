@@ -2,7 +2,7 @@
   "name": "hue-web",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://hue.micopiira.me",
+  "homepage": "http://hue-web.com",
   "dependencies": {
     "bootstrap": "^4.0.0",
     "color-temperature": "^0.2.7",
