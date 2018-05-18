@@ -9,13 +9,36 @@ const octet = (props, propName, componentName) => {
 	}
 };
 
+const light = {
+	manufacturername: PropTypes.string,
+	modelid: PropTypes.string,
+	name: PropTypes.string,
+	id: PropTypes.string,
+	productid: PropTypes.string,
+	state: PropTypes.shape({
+		alert: PropTypes.oneOf(['none', 'select', 'lselect']),
+		bri: PropTypes.number,
+		colormode: PropTypes.oneOf(['hs', 'xy', 'ct']),
+		ct: PropTypes.number,
+		effect: PropTypes.oneOf(effects),
+		hue: PropTypes.number,
+		on: PropTypes.bool,
+		reachable: PropTypes.bool,
+		sat: PropTypes.number,
+	}),
+	swconfigid: PropTypes.string,
+	swversion: PropTypes.string,
+	type: PropTypes.string,
+	uniqueid: PropTypes.string,
+};
+
 export default {
 	octet,
 	group: PropTypes.shape({
 		action: PropTypes.object,
 		class: PropTypes.string,
 		id: PropTypes.string,
-		lights: PropTypes.arrayOf(PropTypes.string),
+		lights: PropTypes.arrayOf(light.id),
 		name: PropTypes.string,
 		recycle: PropTypes.bool,
 		state: PropTypes.object,
@@ -30,25 +53,5 @@ export default {
 		id: PropTypes.string,
 		ipaddress: PropTypes.string,
 	}),
-	light: PropTypes.shape({
-		manufacturername: PropTypes.string,
-		modelid: PropTypes.string,
-		name: PropTypes.string,
-		productid: PropTypes.string,
-		state: PropTypes.shape({
-			alert: PropTypes.oneOf(['none', 'select', 'lselect']),
-			bri: PropTypes.number,
-			colormode: PropTypes.oneOf(['hs', 'xy', 'ct']),
-			ct: PropTypes.number,
-			effect: PropTypes.oneOf(effects),
-			hue: PropTypes.number,
-			on: PropTypes.bool,
-			reachable: PropTypes.bool,
-			sat: PropTypes.number,
-		}),
-		swconfigid: PropTypes.string,
-		swversion: PropTypes.string,
-		type: PropTypes.string,
-		uniqueid: PropTypes.string,
-	})
+	light
 }

@@ -12,18 +12,23 @@ export const ListItem = ({light, setLightState}) =>
 	<div className="card">
 		<div className="card-body">
 
-		<div className="row">
-			<div className="col-sm-2">
-				<button type="button"
-				        disabled={!light.state.reachable}
-				        className={'btn btn-primary' + (light.state.on ? ' active' : '')}
-				        aria-pressed={light.state.on}
-				        onClick={() => setLightState({on: !light.state.on})}>
-					<i className="fa fa-power-off" aria-hidden="true"/>
-				</button>
+			<div className="row">
+				<div className="col-sm-2">
+					<button type="button"
+					        disabled={!light.state.reachable}
+					        className={'btn btn-primary' + (light.state.on ? ' active' : '')}
+					        aria-pressed={light.state.on}
+					        onClick={() => setLightState({on: !light.state.on})}>
+						<i className="fa fa-power-off" aria-hidden="true"/>
+					</button>
+				</div>
+				<div className="col-sm-10">
+					<h5>
+						{!light.state.reachable &&
+						<i className="fa fa-exclamation-triangle text-warning" aria-hidden="true" title="Unreachable"/>}
+						&nbsp;{light.name}</h5>
+				</div>
 			</div>
-			<div className="col-sm-10"><h5>{light.name}</h5></div>
-		</div>
 
 			{light.state.on &&
 			<div className="row">
@@ -75,7 +80,7 @@ export const ListItem = ({light, setLightState}) =>
 	</div>;
 
 ListItem.propTypes = {
-	light: propTypes.light,
+	light: PropTypes.shape(propTypes.light),
 	setLightState: PropTypes.func,
 };
 
