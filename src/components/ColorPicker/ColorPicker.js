@@ -4,16 +4,22 @@ import {rgb_to_cie} from "./cie_rgb_converter";
 import propTypes from "../../propTypes";
 
 class ColorPicker extends React.Component {
+
 	static propTypes = {
 		onChange: PropTypes.func.isRequired,
 		color: propTypes.rgb
 	};
+
 	state = {
 		r: 0,
 		g: 0,
 		b: 0,
 		visible: false
 	};
+
+	static getDerivedStateFromProps(nextProps, prevState) {
+		return nextProps.color;
+	}
 
 	constructor() {
 		super();
@@ -72,6 +78,7 @@ class ColorPicker extends React.Component {
 	}
 
 	render() {
+
 		return <div style={{position: 'relative'}}>
 			<div
 				onMouseOver={() => this.setState({visible: true})}
