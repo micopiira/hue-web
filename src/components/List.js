@@ -32,8 +32,10 @@ class List extends React.Component {
 					}}/>
 				</div>
 				<div className="col">
+					<div className="container">
 					{this.props.lights[this.state.currentLight] ?
 					<ListItem light={this.props.lights[this.state.currentLight]}/> : 'No light selected'}
+					</div>
 				</div>
 			</div>;
 	}

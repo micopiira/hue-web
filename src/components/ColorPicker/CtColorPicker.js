@@ -62,7 +62,7 @@ class CtColorPicker extends React.Component {
 	}
 
 	render() {
-		return <canvas style={{cursor: 'pointer'}} className="img-fluid" height={50} ref="canvas"
+		return <canvas style={{cursor: 'pointer', border: '1px solid #ced4da'}} className="img-fluid" height={50} ref="canvas"
 		               onClick={this.handleClick}/>;
 	}
 }

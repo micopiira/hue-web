@@ -9,7 +9,7 @@ class Setup extends Component {
 	}
 
 	bridgesList() {
-		return <div className="list-group">
+		return <div className="container"><div className="list-group">
 			{this.props.bridges.map(bridge =>
 				<button className="list-group-item list-group-item-action"
 				   key={bridge.id}
@@ -17,20 +17,21 @@ class Setup extends Component {
 					{bridge.ipaddress}
 				</button>
 			)}
-		</div>;
+		</div></div>;
 	}
 
-	static noBridges() {
-		return <p>No bridges found</p>;
+	noBridges() {
+		return this.props.loading ? <p>Loading</p> : <p>No bridges found</p>;
 	}
 
 	render() {
-		return this.props.bridges.length > 0 ? this.bridgesList() : Setup.noBridges();
+		return this.props.bridges.length > 0 ? this.bridgesList() : this.noBridges();
 	}
 }
 
-const mapStateToProps = ({bridges}) => ({
-	bridges
+const mapStateToProps = ({bridges, loading}) => ({
+	bridges,
+	loading
 });
 
 export default connect(mapStateToProps)(Setup);

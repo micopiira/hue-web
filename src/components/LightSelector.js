@@ -2,20 +2,34 @@ import React from "react";
 import PropTypes from "prop-types";
 import propTypes from "../propTypes";
 import {connect} from "react-redux";
+import {bindActionCreators} from "redux";
+import {setLightStateThunk} from "../redux/actions";
+import ListItem from "./ListItem";
 
-const LightSelector = ({groups, lights, currentLight, onChange}) => <ul className="list-group list-group-flush">
+const LightSelector = ({groups, lights, currentLight, onChange, setLightState}) => <ul className="list-group list-group-flush">
 	{groups.map(group =>
 		<li key={group.id} className="list-group-item">
-			<strong>{group.name}</strong>
+			<h5>{group.name}</h5>
 			<div className="list-group list-group-flush">
-			{group.lights.map(lightId =>
-				<button className={"list-group-item list-group-item-action" + (currentLight == lightId ? " active" : "")}
-				    onClick={() => onChange(lightId)}
-				    key={lightId}
-			        title={!lights[lightId].state.reachable ? "Unreachable" : ""}
-					disabled={!lights[lightId].state.reachable}>
+			{group.lights.map(lightId => {
+				const reachable = lights[lightId].state.reachable;
+				const cssClass = [
+					["list-group-item list-group-item-action d-flex justify-content-between align-items-center", true],
+					["active", currentLight == lightId],
+					["disabled", !reachable]
+				].map(arr => arr[1] ? arr[0] : []).join(" ");
+
+				return <div className={cssClass}
+				     onClick={() => reachable ? onChange(lightId) : {}}
+				     key={lightId}
+				     title={!reachable ? "Unreachable" : ""}>
 					{lights[lightId].name}
-				</button>
+					<input type="checkbox"
+					       disabled={!reachable}
+					       checked={lights[lightId].state.on && reachable}
+					       onChange={() => setLightState(lightId, {on: !lights[lightId].state.on})}/>
+				</div>
+			}
 			)}
 			</div>
 		</li>
@@ -31,4 +45,8 @@ LightSelector.propTypes = {
 
 const mapStateToProps = ({groups, lights}) => ({groups, lights});
 
-export default connect(mapStateToProps)(LightSelector);
+const mapDispatchToProps = (dispatch, ownProps) => bindActionCreators({
+	setLightState: (lightId, state) => setLightStateThunk(lightId, state)
+}, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(LightSelector);

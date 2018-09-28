@@ -21,7 +21,7 @@ class App extends Component {
 			[
 				<nav key={0} className="navbar navbar-light bg-light mb-3">
 					<div className="container">
-						<a className="navbar-brand" href="#">Hue Web</a>
+						<a className="navbar-brand" href="/">Hue Web</a>
 					</div>
 				</nav>,
 				<div key={1}>
