@@ -15,13 +15,6 @@ class List extends React.Component {
 		currentLight: ''
 	};
 
-	static getDerivedStateFromProps(nextProps, prevState) {
-		if (Object.values(nextProps.lights)[0] && !prevState.currentLight) {
-			return {currentLight: Object.values(nextProps.lights)[0].id};
-		}
-		return null;
-	}
-
 	componentDidMount() {
 		if (this.props.username) {
 			this.props.dispatch(login(this.props.currentBridge, this.props.username));
@@ -32,15 +25,17 @@ class List extends React.Component {
 	}
 
 	render() {
-		return [
-			<div key={0} className="form-group m-2">
-				<LightSelector currentLight={this.state.currentLight} onChange={event => {
-					this.setState({currentLight: event.target.value})
-				}}/>
-			</div>,
-			<div key={1}>{this.props.lights[this.state.currentLight] ?
-				<ListItem light={this.props.lights[this.state.currentLight]}/> : 'No light selected'}</div>
-		];
+		return <div className="row">
+				<div className="col-3">
+					<LightSelector currentLight={this.state.currentLight} onChange={light => {
+						this.setState({currentLight: light})
+					}}/>
+				</div>
+				<div className="col">
+					{this.props.lights[this.state.currentLight] ?
+					<ListItem light={this.props.lights[this.state.currentLight]}/> : 'No light selected'}
+				</div>
+			</div>;
 	}
 }
 

@@ -8,17 +8,24 @@ class Setup extends Component {
 		this.props.dispatch(fetchBridgesThunk());
 	}
 
-	render() {
-		return this.props.bridges.length > 0 ? <ul>
+	bridgesList() {
+		return <div className="list-group">
 			{this.props.bridges.map(bridge =>
-				<li key={bridge.id}>
+				<button className="list-group-item list-group-item-action"
+				   key={bridge.id}
+				   onClick={() => this.props.dispatch(loginOrRegisterThunk(bridge))}>
 					{bridge.ipaddress}
-					<button className="btn btn-primary"
-					        onClick={() => this.props.dispatch(loginOrRegisterThunk(bridge))}>connect
-					</button>
-				</li>
+				</button>
 			)}
-		</ul> : <p>No bridges found</p>;
+		</div>;
+	}
+
+	static noBridges() {
+		return <p>No bridges found</p>;
+	}
+
+	render() {
+		return this.props.bridges.length > 0 ? this.bridgesList() : Setup.noBridges();
 	}
 }
 

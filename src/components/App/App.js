@@ -18,10 +18,17 @@ class App extends Component {
 
 	render() {
 		return (
-			<div className="container">
-				{this.props.loading && <div className="fixed-top text-right"><LoadingIndicator/></div>}
-				{this.props.currentBridge ? <List/> : <Setup/>}
-			</div>
+			[
+				<nav key={0} className="navbar navbar-light bg-light mb-3">
+					<div className="container">
+						<a className="navbar-brand" href="#">Hue Web</a>
+					</div>
+				</nav>,
+				<div key={1}>
+					{this.props.loading && <div className="fixed-top text-right"><LoadingIndicator/></div>}
+					{this.props.currentBridge ? <List/> : <Setup/>}
+				</div>
+			]
 		);
 	}
 }
