@@ -9,7 +9,9 @@ class Setup extends Component {
 	}
 
 	bridgesList() {
-		return <div className="container"><div className="list-group">
+		return <div className="container">
+			<h1 className="lead">Select bridge:</h1>
+			<div className="list-group">
 			{this.props.bridges.map(bridge =>
 				<button className="list-group-item list-group-item-action"
 				   key={bridge.id}
@@ -21,7 +23,7 @@ class Setup extends Component {
 	}
 
 	noBridges() {
-		return this.props.loading ? <p>Loading</p> : <p>No bridges found</p>;
+		return this.props.loading ? <p>Loading...</p> : <strong>No bridges found</strong>;
 	}
 
 	render() {
