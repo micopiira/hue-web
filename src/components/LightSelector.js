@@ -4,7 +4,6 @@ import propTypes from "../propTypes";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {setLightStateThunk} from "../redux/actions";
-import ListItem from "./ListItem";
 
 const LightSelector = ({groups, lights, currentLight, onChange, setLightState}) => <ul className="list-group list-group-flush">
 	{groups.map(group =>
@@ -13,9 +12,9 @@ const LightSelector = ({groups, lights, currentLight, onChange, setLightState}) 
 			<div className="list-group list-group-flush">
 			{group.lights.map(lightId => {
 				const reachable = lights[lightId].state.reachable;
-				const cssClass = [
+					const cssClass = [
 					["list-group-item list-group-item-action d-flex justify-content-between align-items-center", true],
-					["active", currentLight == lightId],
+					["active", parseInt(currentLight) === parseInt(lightId)],
 					["disabled", !reachable]
 				].map(arr => arr[1] ? arr[0] : []).join(" ");
 
