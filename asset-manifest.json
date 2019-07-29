@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.js": "/hue-web/static/js/main.dcf6f68c.chunk.js",
+    "main.js.map": "/hue-web/static/js/main.dcf6f68c.chunk.js.map",
+    "runtime~main.js": "/hue-web/static/js/runtime~main.c707eddb.js",
+    "runtime~main.js.map": "/hue-web/static/js/runtime~main.c707eddb.js.map",
+    "static/css/2.4244d7fd.chunk.css": "/hue-web/static/css/2.4244d7fd.chunk.css",
+    "static/js/2.379fdcf6.chunk.js": "/hue-web/static/js/2.379fdcf6.chunk.js",
+    "static/js/2.379fdcf6.chunk.js.map": "/hue-web/static/js/2.379fdcf6.chunk.js.map",
+    "index.html": "/hue-web/index.html",
+    "precache-manifest.8d7f82f24823cf1e635c6ac936cf1160.js": "/hue-web/precache-manifest.8d7f82f24823cf1e635c6ac936cf1160.js",
+    "service-worker.js": "/hue-web/service-worker.js",
+    "static/css/2.4244d7fd.chunk.css.map": "/hue-web/static/css/2.4244d7fd.chunk.css.map",
+    "static/media/font-awesome.css": "/hue-web/static/media/fontawesome-webfont.fee66e71.woff"
+  }
+}
